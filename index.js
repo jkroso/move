@@ -126,7 +126,9 @@ Move.prototype.current = function(prop){
  */
 
 Move.prototype.skew = function(x, y){
-	this.getf('transform').skew(x, y || 0)
+	this.getf('transform').skew(
+		toRadians(x),
+		toRadians(y || 0))
 	return this
 }
 
@@ -139,8 +141,7 @@ Move.prototype.skew = function(x, y){
  */
 
 Move.prototype.skewX = function(n){
-	this.getf('transform').skew(n, 0)
-	return this
+	return this.skew(n, 0)
 }
 
 /**
@@ -152,8 +153,7 @@ Move.prototype.skewX = function(n){
  */
 
 Move.prototype.skewY = function(n){
-	this.getf('transform').skew(0, n)
-	return this
+	return this.skew(0, n)
 }
 
 /**
@@ -161,12 +161,13 @@ Move.prototype.skewY = function(n){
  *
  * @param {Number} x
  * @param {Number} y
+ * @param {Number} z
  * @return {Move} for chaining
  * @api public
  */
 
-Move.prototype.translate = function(x, y){
-	this.getf('transform').translate(x, y, 0)
+Move.prototype.translate = function(x, y, z){
+	this.getf('transform').translate(x, y, z || 0)
 	return this
 }
 
@@ -180,8 +181,7 @@ Move.prototype.translate = function(x, y){
 
 Move.prototype.translateX =
 Move.prototype.x = function(n){
-	this.getf('transform').translate(n, 0, 0)
-	return this
+	return this.translate(n, 0, 0)
 }
 
 /**
@@ -194,8 +194,7 @@ Move.prototype.x = function(n){
 
 Move.prototype.translateY =
 Move.prototype.y = function(n){
-	this.getf('transform').translate(0, n, 0)
-	return this
+	return this.translate(0, n, 0)
 }
 
 /**
@@ -222,8 +221,7 @@ Move.prototype.scale = function(x, y){
  */
 
 Move.prototype.scaleX = function(n){
-	this.getf('transform').scale(n, 1, 1)
-	return this
+	return this.scale(n, 1, 1)
 }
 
 /**
@@ -235,8 +233,7 @@ Move.prototype.scaleX = function(n){
  */
 
 Move.prototype.scaleY = function(n){
-	this.getf('transform').scale(1, n, 1)
-	return this
+	return this.scale(1, n, 1)
 }
 
 /**
@@ -370,4 +367,8 @@ defaultType[prefix('transform')] = 'matrix'
 
 function copy(obj){
 	return merge({}, obj)
+}
+
+function toRadians(angle){
+	return angle * (Math.PI / 180)
 }
