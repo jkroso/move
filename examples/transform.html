@@ -1,0 +1,31 @@
+
+<title>transform example</title>
+
+<style>
+	body {
+		margin: 0;
+		padding: 60px;
+	}
+	#square {
+		border: 1px solid #888;
+		width: 100px;
+		height: 100px;
+		background-color: white;
+	}
+</style>
+
+<div id="square"></div>
+
+<script>
+	var move = require('..')
+
+	move(document.getElementById('square'))
+		.set('background-color', 'rgb(160,160,160)')
+		.set('border-color', 'rgb(0,0,0)')
+		.translate(500, 200)
+		.skew(50)
+		.rotate(-90)
+		.scale(4)
+		.ease('out-sine')
+		.run('1s')
+</script>

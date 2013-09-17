@@ -1,0 +1,31 @@
+
+<title>color</title>
+
+<style>
+	body {
+		margin: 0;
+		padding: 60px;
+	}
+	#box {
+		width: 300px;
+		height: 300px;
+		background: rgb(5, 5, 255);
+	}
+</style>
+
+<div id="box"></div>
+
+<script>
+	var move = require('..')
+
+	move(document.getElementById('box'))
+		.set('background', 'rgb(255,5,5)')
+		.ease('out-sine')
+		.duration('1.2s')
+		.then(function(){
+			move(this.el)
+				.set('background', 'rgb(5,5,255)')
+				.ease('out-sine')
+				.run('1.2s')
+		})
+</script>

@@ -1,0 +1,27 @@
+{
+  "name": "move",
+  "repo": "jkroso/move",
+  "description": "pure JavaScript DOM animation",
+  "keywords": [
+    "animation"
+  ],
+  "dependencies": {
+    "jkroso/computed-style": "0.1.0",
+    "jkroso/emitter": "0.9.0",
+    "component/css": "0.0.2",
+    "component/raf": "1.1.1",
+    "jkroso/tween": "0.3.1",
+    "yields/merge": "1.0.0",
+    "jkroso/prefix": "0.1.0"
+  },
+  "development": {
+    "visionmedia/mocha": "1.13.0",
+    "chaijs/chai-spies": "0.5.1",
+    "jkroso/serve": "1.5.1",
+    "chaijs/chai": "1.7.2"
+  },
+  "scripts": [
+    "index.js"
+  ],
+  "license": "MIT"
+}
