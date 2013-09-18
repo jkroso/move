@@ -4,16 +4,12 @@ var frame = Tween.prototype.frame
 
 module.exports = RGB
 
-function RGB(from){
+function RGB(from, to){
 	this._from = parse(from)
+	this._to = parse(to)
 }
 
 Tween.extend(RGB, 'final')
-
-RGB.prototype.to = function(to){
-	this._to = parse(to)
-	return this
-}
 
 RGB.prototype.frame = function(progress){
 	var rgb = frame.call(this, progress).map(toInt)

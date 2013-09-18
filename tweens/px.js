@@ -6,13 +6,9 @@ module.exports = PX
 
 Tween.extend(PX, 'final')
 
-function PX(from){
+function PX(from, to){
 	this._from = toNumber(from)
-}
-
-PX.prototype.to = function(to) {
 	this._to = toNumber(to)
-	return this
 }
 
 PX.prototype.frame = function(progress) {

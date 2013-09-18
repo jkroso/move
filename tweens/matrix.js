@@ -4,7 +4,7 @@ var frame = Tween.prototype.frame
 
 module.exports = Matrix
 
-function Matrix(from){
+function Matrix(from, to){
 	this.matrix = typeof from == 'string'
 		? new WebKitCSSMatrix(from)
 		: new WebKitCSSMatrix
@@ -12,10 +12,6 @@ function Matrix(from){
 }
 
 Tween.extend(Matrix, 'final')
-
-Matrix.prototype.to = function(to){
-	return this
-}
 
 Matrix.prototype.reset = function(){
 	this._to = toArray(this.matrix)

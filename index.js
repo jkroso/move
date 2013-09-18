@@ -406,7 +406,7 @@ function type(css){
 function tween(prop, from, to){
 	var Tween = tweens[type(from)]
 		|| tweens[defaultType[prop]]
-	return new Tween(from).to(to)
+	return new Tween(from, to)
 }
 
 /**
