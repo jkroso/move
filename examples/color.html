@@ -4,11 +4,11 @@
 <style>
 	body {
 		margin: 0;
-		padding: 60px;
 	}
 	#box {
 		width: 300px;
 		height: 300px;
+		margin: 100px auto;
 		background: rgb(5, 5, 255);
 	}
 </style>
@@ -20,12 +20,10 @@
 
 	move(document.getElementById('box'))
 		.set('background', 'rgb(255,5,5)')
+		.rotate(45)
 		.ease('out-sine')
-		.duration('1.2s')
-		.then(function(){
-			move(this.el)
-				.set('background', 'rgb(5,5,255)')
-				.ease('out-sine')
-				.run('1.2s')
-		})
+		.duration('.5s')
+		.then()
+			.set('background', 'rgb(5,5,255)')
+			.rotate(-45)
 </script>

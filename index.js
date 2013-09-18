@@ -31,6 +31,7 @@ function Move(el){
 
 merge(Move.prototype, Emitter.prototype)
 merge(Move.prototype, Tween.prototype)
+merge(Move, Tween)
 
 /**
  * add `prop` to animation. When the animation is run
@@ -113,7 +114,7 @@ Move.prototype.tween = function(prop, from, to){
  */
 
 Move.prototype.current = function(prop){
-	return style(this.el).getPropertyValue(prop)
+	return style(this.el)[prop]
 }
 
 /**
@@ -245,7 +246,7 @@ Move.prototype.scaleY = function(n){
  */
 
 Move.prototype.rotate = function(n){
-	this.getf('transform').rotate(1, 1, n)
+	this.getf('transform').rotate(0, 0, n)
 	return this
 }
 
@@ -301,16 +302,64 @@ Move.prototype.duration = function(n){
 }
 
 /**
- * Defer `fn` until the animation is complete
+ * Create a `DeferredMove` instance which will run
+ * when `this` move completes.
  *
- * @param {Function} fn
- * @return {this}
+ * @return {DeferredMove}
  * @api public
  */
 
-Move.prototype.then = function(fn){
-	this.on('end', fn)
-	return this.run()
+Move.prototype.then = function(){
+	var move = new DeferredMove(this)
+	this.on('end', function(){
+		move.run()
+	})
+	if (!this.running) this.run()
+	return move
+}
+
+/**
+ * create a specialized sub-class of `Move` for use
+ * in `then()`
+ *
+ * @param {Move} parent
+ * @api private
+ */
+
+var DeferredMove = Move.extend(function(parent){
+	this._duration = parent._duration
+	this._ease = parent._ease
+	this.parent = parent
+	this.el = parent.el
+	this.tweens = {}
+}, 'final')
+
+/**
+ * check parent tween incase `prop` is currently being
+ * animated. If it is get the final frame
+ *
+ * @param {String} prop
+ * @return {CSS}
+ * @api private
+ */
+
+DeferredMove.prototype.current = function(prop){
+	if (prop in this.parent._to) {
+		return this.parent._to[prop]
+	}
+	return style(this.el)[prop]
+}
+
+/**
+ * sugar for `this.parent`. Sometimes looks nicer in
+ * long chains
+ *
+ * @return {Move}
+ * @api public
+ */
+
+DeferredMove.prototype.pop = function(){
+	return this.parent
 }
 
 /**
@@ -323,17 +372,20 @@ Move.prototype.then = function(fn){
 
 Move.prototype.run = function(n){
 	if (n != null) this.duration(n)
-	if (this.running) return this
-	this.running = true
 	var self = this
-	this.reset()
 	raf(function loop(){
 		css(self.el, self.next())
 		if (self.done) self.emit('end')
 		else raf(loop)
 	})
+	this.running = true
+	this.reset()
 	return this
 }
+
+Move.prototype.on('end', function(){
+	this.running = false
+})
 
 /**
  * determine type of `css` value

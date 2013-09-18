@@ -5,16 +5,15 @@ var frame = Tween.prototype.frame
 module.exports = Matrix
 
 function Matrix(from){
-	from = typeof from == 'string'
+	this.matrix = typeof from == 'string'
 		? new WebKitCSSMatrix(from)
 		: new WebKitCSSMatrix
-	this._from = toArray(from)
+	this._from = toArray(this.matrix)
 }
 
 Tween.extend(Matrix, 'final')
 
 Matrix.prototype.to = function(to){
-	this.matrix = new WebKitCSSMatrix
 	return this
 }
 
@@ -43,12 +42,12 @@ Matrix.prototype.scale = function(x, y, z){
 
 Matrix.prototype.skew = function(x, y){
 	var t = new WebKitCSSMatrix
-  t.m11 = 1
-  t.m12 = Math.tan(y)
-  t.m21 = Math.tan(x)
-  t.m22 = 1
-  t.m41 = 0
-  t.m42 = 0
+	t.m11 = 1
+	t.m12 = Math.tan(y)
+	t.m21 = Math.tan(x)
+	t.m22 = 1
+	t.m41 = 0
+	t.m42 = 0
 	this.matrix = this.matrix.multiply(t)
 }
 

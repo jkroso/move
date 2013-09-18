@@ -86,9 +86,10 @@ var move = require('move')
   set duration to `n`. if `n` is a string it
   is assumed to be in seconds
 
-### Move#then(fn:Function)
+### Move#then()
 
-  Defer `fn` until the animation is complete
+  Create a `DeferredMove` instance which will run
+  when `this` move completes.
 
 ### Move#run([n]:Number|String)
 
