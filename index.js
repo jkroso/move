@@ -1,4 +1,5 @@
 
+var parseColor = require('color-parser')
 var Emitter = require('emitter/light')
 var style = require('computed-style')
 var Tween = require('tween/tween')
@@ -397,10 +398,9 @@ Move.prototype.on('end', function(){
 
 function type(css){
 	if (typeof css == 'number') return 'px'
-	if (/^rgba\([^)]+\)/.test(css)) return 'rgba'
-	if (/^rgb\([^)]+\)/.test(css)) return 'rgb'
 	if (/^matrix/.test(css)) return 'matrix'
 	if (/^\d+px/.test(css)) return 'px'
+	if (parseColor(css)) return 'color'
 }
 
 function tween(prop, from, to){

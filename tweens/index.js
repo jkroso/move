@@ -1,3 +1,3 @@
 exports.matrix = require('./matrix')
-exports.rgb = require('./rgb')
+exports.color = require('./color')
 exports.px = require('./px')

@@ -12,7 +12,8 @@
     "component/raf": "1.1.1",
     "jkroso/tween": "0.3.2",
     "yields/merge": "1.0.0",
-    "jkroso/prefix": "0.1.0"
+    "jkroso/prefix": "0.1.0",
+    "component/color-parser": "0.1.0"
   },
   "development": {
     "visionmedia/mocha": "1.13.0",
