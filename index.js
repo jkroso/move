@@ -128,9 +128,7 @@ Move.prototype.current = function(prop){
  */
 
 Move.prototype.skew = function(x, y){
-	this.getf('transform').skew(
-		toRadians(x),
-		toRadians(y || 0))
+	this.getf('transform').skew(x, y)
 	return this
 }
 
@@ -419,8 +417,4 @@ defaultType[prefix('transform')] = 'matrix'
 
 function copy(obj){
 	return merge({}, obj)
-}
-
-function toRadians(angle){
-	return angle * (Math.PI / 180)
 }
