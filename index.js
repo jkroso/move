@@ -305,8 +305,8 @@ function tween(prop, from, to){
 
 function type(css){
 	if (typeof css == 'number') return 'px'
-	if (/^matrix/.test(css)) return 'matrix'
-	if (/^\d+px/.test(css)) return 'px'
+	if (/^matrix(3d)?\([^)]*\)$/.test(css)) return 'matrix'
+	if (/^[-.\d]+px/.test(css)) return 'px'
 	if (parseColor(css)) return 'color'
 }
 
