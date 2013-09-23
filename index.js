@@ -27,9 +27,16 @@ var transform = prefix('transform')
  * @type {Object}
  */
 
-var defaultType = {}
+var defaultTypes = {
+  fillOpacity: 'number',
+  fontWeight: 'number',
+  opacity: 'number',
+  zIndex: 'number',
+  zoom: 'number',
+  transform: 'matrix'
+}
+defaultTypes[transform] = 'matrix'
 
-defaultType[prefix('transform')] = 'matrix'
 
 /**
  * the Move class
@@ -40,6 +47,7 @@ defaultType[prefix('transform')] = 'matrix'
 
 function Move(el){
 	this._to = {}
+	this._curr = {}
 	this.el = el
 }
 
@@ -291,7 +299,7 @@ Move.prototype.tweens = function(){
 
 function tween(prop, from, to){
 	var Tween = tweens[type(from)]
-		|| tweens[defaultType[prop]]
+		|| tweens[defaultTypes[prop] || 'px']
 	return new Tween(from, to)
 }
 
@@ -424,7 +432,6 @@ Move.prototype.run = function(n){
 	})
 	this.running = true
 	reset.call(this)
-	this._curr = {}
 	return this
 }
 
