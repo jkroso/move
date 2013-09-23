@@ -6,8 +6,7 @@ var rgba = require('color-parser')
 module.exports = Color
 
 function Color(from, to){
-	this._from = parse(from)
-	this._to = parse(to)
+	Tween.call(this, parse(from), parse(to))
 }
 
 Tween.extend(Color, 'final')

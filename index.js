@@ -5,6 +5,7 @@ var style = require('computed-style')
 var Tween = require('tween/tween')
 var reset = Tween.prototype.reset
 var tweens = require('./tweens')
+var CSSMatrix = WebKitCSSMatrix
 var prefix = require('prefix')
 var merge = require('merge')
 var raf = require('raf')
@@ -15,6 +16,22 @@ module.exports = function(el){
 }
 
 /**
+ * 'webkitTransform' || 'MozTransform' etc..
+ * @type {String}
+ */
+
+var transform = prefix('transform')
+
+/**
+ * map of default types
+ * @type {Object}
+ */
+
+var defaultType = {}
+
+defaultType[prefix('transform')] = 'matrix'
+
+/**
  * the Move class
  *
  * @param {Element} el
@@ -22,7 +39,7 @@ module.exports = function(el){
  */
 
 function Move(el){
-	this.tweens = {}
+	this._to = {}
 	this.el = el
 }
 
@@ -44,26 +61,8 @@ merge(Move, Tween)
  */
 
 Move.prototype.set = function(prop, to){
-	this.tween(prop, this.current(prop), to)
+	this._to[prefix(prop)] = to
 	return this
-}
-
-/**
- * get tween for `prop` with force; if it doesn't
- * exist it will be created
- *
- * @param {String} prop
- * @return {Tween}
- * @api private
- */
-
-Move.prototype.getf = function(prop){
-	prop = prefix(prop)
-	var tweens = this.tweens
-	if (tweens[prop]) return tweens[prop]
-	var curr = this.current(prop)
-	this.tween(prop, curr, curr)
-	return tweens[prop]
 }
 
 /**
@@ -75,9 +74,9 @@ Move.prototype.getf = function(prop){
  */
 
 Move.prototype.add = function(prop, n){
+	prop = prefix(prop)
 	var curr = parseInt(this.current(prop), 10)
-	this.tween(prop, curr, curr + n)
-	return this
+	return this.set(prop, curr + n)
 }
 
 /**
@@ -89,22 +88,9 @@ Move.prototype.add = function(prop, n){
  */
 
 Move.prototype.sub = function(prop, n){
+	prop = prefix(prop)
 	var curr = parseInt(this.current(prop), 10)
-	this.tween(prop, curr, curr - n)
-	return this
-}
-
-/**
- * add a tween
- *
- * @param {String} prop
- * @param {CSS} from
- * @param {CSS} to
- * @api private
- */
-
-Move.prototype.tween = function(prop, from, to){
-	this.tweens[prop] = tween(prop, from, to)
+	return this.set(prop, curr - n)
 }
 
 /**
@@ -119,7 +105,7 @@ Move.prototype.current = function(prop){
 }
 
 /**
- * Skew `x` and `y`.
+ * Skew `x` and `y` degrees.
  *
  * @param {Number} x
  * @param {Number} y
@@ -128,12 +114,13 @@ Move.prototype.current = function(prop){
  */
 
 Move.prototype.skew = function(x, y){
-	this.getf('transform').skew(x, y)
+	x && this.skewX(x)
+	y && this.skewY(y)
 	return this
 }
 
 /**
- * Skew x by `n`.
+ * Skew x by `n` degrees.
  *
  * @param {Number} n
  * @return {Move} for chaining
@@ -141,11 +128,12 @@ Move.prototype.skew = function(x, y){
  */
 
 Move.prototype.skewX = function(n){
-	return this.skew(n, 0)
+	this._to[transform] = this.matrix().skewX(n)
+	return this
 }
 
 /**
- * Skew y by `n`.
+ * Skew y by `n` degrees.
  *
  * @param {Number} n
  * @return {Move} for chaining
@@ -153,7 +141,8 @@ Move.prototype.skewX = function(n){
  */
 
 Move.prototype.skewY = function(n){
-	return this.skew(0, n)
+	this._to[transform] = this.matrix().skewY(n)
+	return this
 }
 
 /**
@@ -167,9 +156,10 @@ Move.prototype.skewY = function(n){
  */
 
 Move.prototype.translate = function(x, y, z){
-	this.getf('transform').translate(x, y, z || 0)
+	this._to[transform] = this.matrix().translate(x, y, z || 0)
 	return this
 }
+
 
 /**
  * Translate on the x axis to `n`.
@@ -208,7 +198,7 @@ Move.prototype.y = function(n){
  */
 
 Move.prototype.scale = function(x, y){
-	this.getf('transform').scale(x, y, 1)
+	this._to[transform] = this.matrix().scale(x, y, 1)
 	return this
 }
 
@@ -245,8 +235,22 @@ Move.prototype.scaleY = function(n){
  */
 
 Move.prototype.rotate = function(n){
-	this.getf('transform').rotate(0, 0, n)
+	this._to[transform] = this.matrix().rotate(0, 0, n)
 	return this
+}
+
+/**
+ * get the transformation matrix
+ *
+ * @return {CSSMatrix}
+ * @api private
+ */
+
+Move.prototype.matrix = function(){
+	if (transform in this._to) return this._to[transform]
+	var matrix = this.current(transform)
+	if (typeof matrix == 'string') matrix = new CSSMatrix(matrix)
+	return this._to[transform] = matrix
 }
 
 /**
@@ -258,12 +262,52 @@ Move.prototype.rotate = function(n){
  */
 
 Move.prototype.frame = function(p){
-	var tweens = this.tweens
+	var tweens = this.tweens()
 	var curr = this._curr
 	for (var k in tweens) {
 		curr[k] = tweens[k].frame(p)
 	}
 	return curr
+}
+
+/**
+ * Generate tweens. This should be called
+ * as late as possible
+ *
+ * @return {Object}
+ * @api private
+ */
+
+Move.prototype.tweens = function(){
+	if (this._tweens) return this._tweens
+	var tweens = this._tweens = {}
+	for (var key in this._to) {
+		var from = this.current(key)
+		var to = this._to[key]
+		tweens[key] = tween(key, from, to)
+	}
+	return tweens
+}
+
+function tween(prop, from, to){
+	var Tween = tweens[type(from)]
+		|| tweens[defaultType[prop]]
+	return new Tween(from, to)
+}
+
+/**
+ * determine type of `css` value
+ *
+ * @param {String|Number} css
+ * @return {String}
+ * @api private
+ */
+
+function type(css){
+	if (typeof css == 'number') return 'px'
+	if (/^matrix/.test(css)) return 'matrix'
+	if (/^\d+px/.test(css)) return 'px'
+	if (parseColor(css)) return 'color'
 }
 
 /**
@@ -274,15 +318,12 @@ Move.prototype.frame = function(p){
  */
 
 Move.prototype.reset = function(){
-	for (var tween in this.tweens) {
-		this.tweens[tween]
-			.ease(this._ease)
-			.reset()
+	var tweens = this.tweens()
+	for (var tween in tweens) {
+		tweens[tween].reset().ease(this._ease)
 	}
 	reset.call(this)
 	this._curr = {}
-	// precomputed last frame
-	this._to = copy(this.frame(1))
 	return this
 }
 
@@ -330,7 +371,7 @@ var DeferredMove = Move.extend(function(parent){
 	this._ease = parent._ease
 	this.parent = parent
 	this.el = parent.el
-	this.tweens = {}
+	this._to = {}
 }, 'final')
 
 /**
@@ -378,43 +419,11 @@ Move.prototype.run = function(n){
 		else raf(loop)
 	})
 	this.running = true
-	this.reset()
+	reset.call(this)
+	this._curr = {}
 	return this
 }
 
 Move.prototype.on('end', function(){
 	this.running = false
 })
-
-/**
- * determine type of `css` value
- *
- * @param {String|Number} css
- * @return {String}
- * @api private
- */
-
-function type(css){
-	if (typeof css == 'number') return 'px'
-	if (/^matrix/.test(css)) return 'matrix'
-	if (/^\d+px/.test(css)) return 'px'
-	if (parseColor(css)) return 'color'
-}
-
-function tween(prop, from, to){
-	var Tween = tweens[type(from)]
-		|| tweens[defaultType[prop]]
-	return new Tween(from, to)
-}
-
-/**
- * map of default types
- * @type {Object}
- */
-
-var defaultType = {}
-defaultType[prefix('transform')] = 'matrix'
-
-function copy(obj){
-	return merge({}, obj)
-}

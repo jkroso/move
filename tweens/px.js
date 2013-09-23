@@ -7,14 +7,13 @@ module.exports = PX
 Tween.extend(PX, 'final')
 
 function PX(from, to){
-	this._from = toNumber(from)
-	this._to = toNumber(to)
+	Tween.call(this, parse(from), parse(to))
 }
 
 PX.prototype.frame = function(progress) {
 	return frame.call(this, progress).toFixed(1) + 'px'
 };
 
-function toNumber(px){
+function parse(px){
 	return parseFloat(px, 10) || 0
 }
