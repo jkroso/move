@@ -1,0 +1,241 @@
+doctype 5
+head
+  meta(charset="utf-8")
+  title Move Documentation
+  style.
+    body {
+      padding: 50px;
+      font: 14px/1.5 "helvetica neue", helvetica, arial, sans-serif;
+      color: #8b8b8b;
+    }
+    h1, h2, h3 {
+      font-size: 33px;
+      font-weight: normal;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+    }
+    h2 {
+      display: none;
+      font-size: 33px;
+    }
+    h3 {
+      padding: 5px 0;
+      font-size: 18px;
+      border-bottom: 3px solid #eee;
+    }
+    a {
+      text-decoration: none;
+      color: rgb(106,142,225);
+    }
+    button {
+      vertical-align: middle;
+      border-radius: 50%;
+      border: 0;
+      width: 21px;
+      height: 21px;
+      background: #eee;
+      color: white;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+    button:hover {
+      cursor: pointer;
+    }
+    .sandbox {
+      margin: 10px 0;
+      padding: 5px;
+      border: 1px solid #eee;
+    }
+    .sandbox .box {
+      background: aliceblue;
+      margin: 5px;
+      border: 1px solid #888;
+      font-size: 11px;
+      text-align: center;
+      line-height: 50px;
+    }
+    .sandbox .box.small {
+      width: 50px;
+      height: 50px;
+    }
+    .sandbox .box.wide {
+      width: 100px;
+    }
+    .source {
+      font-family: monaco, monospace;
+      font-size: 12px;
+      color: #999;
+    }
+    .example p {
+      color: #333;
+    }
+    .example p code {
+      color: #999;
+      padding: 2px 5px;
+      border: 1px solid #eee;
+      -webkit-border-radius: 3px;
+    }
+body
+  h1 Move
+  p Move makes writing DOM animations as easy as with CSS3 but since its all JavaScript, offers you more power and composition.
+
+  <h2>Examples</h2>
+  #examples
+    div.example
+      h3 Move#set(prop, val) <button class="play">▶</button>
+      p Set <em>prop</em> to <em>val</em>.
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .set('margin-left', 200)
+          .end()
+
+    div.example
+      h3 Move#add(prop, val) <button class="play">▶</button>
+      p Increment <em>prop</em> by <em>val</em>, where <em>val</em> is an Number (click several times).
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .add('margin-left', 200)
+          .end()
+
+    div.example
+      h3 Move#sub(prop, val) <button class="play">▶</button>
+      p Decrement <em>prop</em> by <em>val</em>, where <em>val</em> is an Number (click several times).
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .sub('margin-left', 100)
+          .end()
+
+    div.example
+      h3 Move#rotate(deg) <button class="play">▶</button>
+      p Rotate by <em>deg</em>.
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .rotate(140)
+          .end()
+
+    div.example
+      h3 Move#duration(n) <button class="play">▶</button>
+      p Set animation duration to <em>n</em> which is a Number or a string such as "4s".
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .set('background-color', 'blue')
+          .duration('2s')
+          .end()
+
+    div.example
+      h3 Move#translate(x[, y]) <button class="play">▶</button>
+      p Translate <em>x</em> and optionally <em>y</em> axis.
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .translate(100, 20)
+          .end()
+
+    div.example
+      h3 Move#x(n) / Move#y(n) <button class="play">▶</button>
+      p Translate <em>x</em> or <em>y</em> axis. Aliased by <code>Move#translateX(n)</code> and <code>Move#translateY(n)</code>.
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .x(100)
+          .y(20)
+          .end()
+
+    div.example
+      h3 Move#skew(x[, y]) <button class="play">▶</button>
+      p Skew <em>x</em>, and optionally <em>y</em>. <code>Move#skewX(n)</code> and <code>Move#skewY(n)</code> are also available.</p>
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .skew(50)
+          .end()
+
+    div.example
+      h3 Move#scale(x[, y]) <button class="play">▶</button>
+      p Scale the <em>x</em>, and optionally <em>y</em> axis. <code>Move#scaleX(n)</code> and <code>Move#scaleY(n)</code> are also available.
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .scale(3)
+          .end()
+
+    div.example
+      h3 Move#end([fn]) <button class="play">▶</button>
+      p The <code>end()</code> method triggers the animation to play. Optionally you can pass it a callback <em>fn</em> to call when complete or a duration.
+      div.sandbox
+        div.box.small
+      pre.source: code.
+        move(box)
+          .set('background-color', 'blue')
+          .duration('1s')
+          .end(function(){
+            move(box)
+              .set('background-color', 'aliceblue')
+              .end('1s')
+          })
+
+    div.example
+      h3 Move#then([fn]) <button class="play">▶</button>
+      p  Creates a <code>DeferredMove</code> which will be run when this move completes. Optionally you can pass in a Move instance and it will be run on completion of this animation just as a <code>DeferredMove</code> would. <code>then()</code> returns the <code>DeferredMove</code> instance so you can configure it while <code>then(move(el))</code> returns this for chaining. <code>DeferredMove</code>'s have a special method <code>pop()</code> which returns its parent move incase you want to continue configuring it in a chain.
+      div.sandbox
+        div.box.small
+        div.box.small
+      pre.source: code.
+        var moveBack = move(boxs[0])
+          .set('background-color', 'aliceblue')
+          .x(0)
+
+        move(boxs[0])
+          .set('background-color', 'blue')
+          .x(500)
+          .then(moveBack)
+
+        move(boxs[1])
+          .set('background-color', 'blue')
+          .x(500)
+          .scale(.5)
+          .rotate(60)
+            .then()
+              .rotate(30)
+              .scale(2)
+              .set('border-radius', 5)
+              .set('opacity', 0)
+              .then()
+                .rotate(270)
+                .x(-500)
+                .set('background-color', 'aliceblue')
+                .set('border-radius', 0)
+                .set('opacity', 1)
+
+    div.example
+      h3 Move#ease(fn) <button class="play">▶</button>
+      p Use the given easing <code>fn</code>. The default function is "linear". For a complete list of available functions <a href="http://github.com/component/ease">see</a>
+      div.sandbox
+        div.box.small.wide linear
+        div.box.small.wide in-quad
+        div.box.small.wide out-quad
+        div.box.small.wide in-out-quad
+      pre.source: code.
+        boxs.forEach(function(box){
+          move(box)
+            .ease(box.textContent)
+            .x(400)
+            .then()
+              .x(-400)
+        })
+
+  script(src="examples.js")

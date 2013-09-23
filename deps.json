@@ -1,0 +1,9 @@
+{
+  "production": {
+    "dom": "http://github.com/component/dom/tarball/0.9.0",
+    "move": "http://github.com/jkroso/move/tarball/master",
+    "serve": "http://github.com/jkroso/serve/tarball/1.5.1",
+    "css": "http://github.com/component/css/tarball/0.0.2",
+    "computed-style": "http://github.com/jkroso/computed-style/tarball/0.1.0"
+  }
+}
