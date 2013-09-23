@@ -403,15 +403,19 @@ DeferredMove.prototype.pop = function(){
 }
 
 /**
- * run the animation with an optional duration
+ * run the animation with an optional callback or duration
  *
- * @param {Number|String} [n]
+ * @param {Number|String|Function} [n]
  * @return {this}
  * @api public
  */
 
+Move.prototype.end =
 Move.prototype.run = function(n){
-	if (n != null) this.duration(n)
+	if (n != null) {
+		if (typeof n == 'function') this.on('end', n)
+		else this.duration(n)
+	}
 	var self = this
 	raf(function loop(){
 		css(self.el, self.next())
