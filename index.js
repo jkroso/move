@@ -37,6 +37,10 @@ var defaultTypes = {
 }
 defaultTypes[transform] = 'matrix'
 
+function defaultType(key){
+	return defaultTypes[key] || 'px'
+}
+
 
 /**
  * the Move class
@@ -298,8 +302,8 @@ Move.prototype.tweens = function(){
 }
 
 function tween(prop, from, to){
-	var Tween = tweens[type(from)]
-		|| tweens[defaultTypes[prop] || 'px']
+	var Tween = typeof from == 'string' && tweens[type(from)]
+	if (!Tween) Tween = tweens[defaultType(prop)]
 	return new Tween(from, to)
 }
 
@@ -312,7 +316,6 @@ function tween(prop, from, to){
  */
 
 function type(css){
-	if (typeof css == 'number') return 'px'
 	if (/^matrix(3d)?\([^)]*\)$/.test(css)) return 'matrix'
 	if (/^[-.\d]+px/.test(css)) return 'px'
 	if (parseColor(css)) return 'color'
