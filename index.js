@@ -351,18 +351,25 @@ Move.prototype.duration = function(n){
 
 /**
  * Create a `DeferredMove` instance which will run
- * when `this` move completes.
+ * when `this` move completes. Optionally you can
+ * pass in a Move instance in which case it will be
+ * be run on completion of `this` animation.
  *
- * @return {DeferredMove}
+ * @param {Move} [move]
+ * @return {this|DeferredMove}
  * @api public
  */
 
-Move.prototype.then = function(){
-	var move = new DeferredMove(this)
-	this.on('end', function(){
-		move.run()
-	})
-	if (!this.running) this.run()
+Move.prototype.then = function(move){
+	if (move) {
+		this.on('end', function(){
+			move.run()
+		})
+		if (!this.running) this.run()
+		return this
+	}
+	move = new DeferredMove(this)
+	this.then(move)
 	return move
 }
 
@@ -375,11 +382,10 @@ Move.prototype.then = function(){
  */
 
 var DeferredMove = Move.extend(function(parent){
+	Move.call(this, parent.el)
 	this._duration = parent._duration
 	this._ease = parent._ease
 	this.parent = parent
-	this.el = parent.el
-	this._to = {}
 }, 'final')
 
 /**
