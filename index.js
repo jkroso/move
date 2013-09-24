@@ -41,7 +41,6 @@ function defaultType(key){
 	return defaultTypes[key] || 'px'
 }
 
-
 /**
  * the Move class
  *
@@ -389,6 +388,7 @@ var DeferredMove = Move.extend(function(parent){
 	this._duration = parent._duration
 	this._ease = parent._ease
 	this.parent = parent
+	this.running = true
 }, 'final')
 
 /**
@@ -401,8 +401,10 @@ var DeferredMove = Move.extend(function(parent){
  */
 
 DeferredMove.prototype.current = function(prop){
-	if (prop in this.parent._to) {
-		return this.parent._to[prop]
+	var parent = this.parent
+	while (parent) {
+		if (prop in parent._to) return parent._to[prop]
+		parent = parent.parent
 	}
 	return style(this.el)[prop]
 }

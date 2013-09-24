@@ -1,6 +1,9 @@
 
 var move = require('..')
 var chai = require('./chai')
+var prefix = require('prefix')
+
+var transform = prefix('transform')
 
 var box
 var mv
@@ -37,6 +40,25 @@ describe('move', function(){
 				spy.should.have.been.called(1)
 				done()
 			})
+		})
+
+		it('should pull current value down from grandparents', function(){
+			var frame = {}
+			frame[transform] = 'matrix(1.000000, 0.000000, 0.000000, 1.000000, 3.000000, 0.000000)'
+			mv.x(5)
+				.then()
+					.then()
+						.x(-2).frame(1).should.eql(frame)
+		})
+
+		it('should not auto-run deferred moves', function(done){
+			var a = mv.x(5).on('end', function(){
+				b.frame.should.not.have.been.called()
+				done()
+			})
+			var b = a.then()
+			b.frame = spy
+			var c = b.then()
 		})
 	})
 })
