@@ -21,79 +21,21 @@ then in your app:
 var move = require('move')
 ```
 
-## API
+## Usage
 
-### Move(el)
+```js
+move(document.body)
+  .set('background-color', 'blue')
+  .rotate(30)
+  .scale(2)
+  .ease('out-bounce')
+  .duration('.2s')
+  .then()
+    .rotate(-30)
+    .scale(.5)
+```
 
-  the Move class
-
-### Move#set(prop:String, to:CSS)
-
-  add `prop` to animation. When the animation is run
-  `prop` will be tweened from its current value to `to`
-
-### Move#add(prop:String, to:Number)
-
-  increment `prop` by `n`
-
-### Move#sub(prop:String, to:Number)
-
-  decrement `prop` by `n`
-
-### Move#current(prop:String)
-
-  get the current value of `prop`
-
-### Move#skew(x:Number, y:Number)
-
-  Skew `x` and `y`.
-
-### Move#skewX(n:Number)
-
-  Skew x by `n`.
-
-### Move#skewY(n:Number)
-
-  Skew y by `n`.
-
-### Move#translate(x:Number, y:Number)
-
-  Translate `x` and `y` axis.
-
-### Move#scale(x:Number, y:Number)
-
-  Scale the x and y axis by `x`, or
-  individually scale `x` and `y`.
-
-### Move#scaleX(n:Number)
-
-  Scale x axis by `n`.
-
-### Move#scaleY(n:Number)
-
-  Scale y axis by `n`.
-
-### Move#rotate(n:Number)
-
-  Rotate `n` degrees.
-
-### Move#reset()
-
-  reset the animation so it can be re-used
-
-### Move#duration(n:Number|String)
-
-  set duration to `n`. if `n` is a string it
-  is assumed to be in seconds
-
-### Move#then()
-
-  Create a `DeferredMove` instance which will run
-  when `this` move completes.
-
-### Move#run([n]:Number|String)
-
-  run the animation with an optional duration
+This will enlarge the document while rotating it clockwise and changing the background color to blue. `then()` 200ms later when that animation completes it will animate back to its original size and rotation.
 
 ## Running the tests
 
