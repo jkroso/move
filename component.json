@@ -13,13 +13,14 @@
     "jkroso/tween": "0.3.2",
     "yields/merge": "1.0.0",
     "jkroso/prefix": "0.1.0",
-    "component/color-parser": "0.1.0"
+    "component/color-parser": "0.1.0",
+    "jkroso/unmatrix": "0.0.1"
   },
   "development": {
     "visionmedia/mocha": "1.13.0",
     "chaijs/chai-spies": "0.5.1",
     "jkroso/serve": "1.5.1",
-    "chaijs/chai": "1.7.2"
+    "chaijs/chai": "1.8.1"
   },
   "scripts": [
     "index.js"

@@ -1,7 +1,9 @@
 
-var Tween = require('tween/array')
+var Tween = require('tween/object')
+var matrix = require('unmatrix')
+var decompose = matrix.decompose
+var parseString = matrix.parse
 var frame = Tween.prototype.frame
-var CSSMatrix = WebKitCSSMatrix
 
 module.exports = Matrix
 
@@ -12,21 +14,32 @@ function Matrix(from, to){
 Tween.extend(Matrix, 'final')
 
 Matrix.prototype.frame = function(p){
-	return 'matrix(' + frame.call(this, p).map(clamp).join(', ') + ')'
+	return toString(frame.call(this, p))
 }
 
-function parse(matrix){
-	if (typeof matrix == 'string') matrix = new CSSMatrix(matrix)
-	return [
-		matrix.m11,
-		matrix.m12,
-		matrix.m21,
-		matrix.m22,
-		matrix.m41,
-		matrix.m42,
-	]
+function parse(m){
+	return decompose(typeof m == 'string'
+		? parseString(m)
+		: [
+				m.m11, m.m12,
+				m.m21, m.m22,
+				m.m41, m.m42,
+			])
 }
 
-function clamp(n){
-	return n.toFixed(6)
+function toString(props) {
+	var str = ''
+	for(var k in props) {
+			str += k + '(' + props[k] + unit[k] + ') '
+	}
+	return str
+}
+
+var unit = {
+	translateX: 'px',
+	translateY: 'px',
+	rotate: 'deg',
+	skew: 'deg',
+	scaleX: '',
+	scaleY: ''
 }
