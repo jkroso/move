@@ -61,14 +61,6 @@ merge(Move.prototype, Emitter.prototype)
 extensible(Move)
 
 /**
- * defaults
- */
-
-lazy(Move.prototype, 'start', now)
-Move.prototype.running = false
-Move.prototype.done = false
-
-/**
  * add `prop` to animation. When the animation is run
  * `prop` will be tweened from its current value to `to`
  *
@@ -314,8 +306,6 @@ Move.prototype.ease = function(fn){
 	return this
 }
 
-Move.prototype.ease('linear') // default
-
 /**
  * generate the next frame
  *
@@ -328,7 +318,7 @@ Move.prototype.next = function(){
 
 	if (progress >= 1) {
 		this.done = true
-		return this._to
+		progress = 1
 	}
 
 	return this.frame(this._ease(progress))
@@ -431,3 +421,12 @@ DeferredMove.prototype.current = function(prop){
 DeferredMove.prototype.pop = function(){
 	return this.parent
 }
+
+/**
+ * defaults
+ */
+
+lazy(Move.prototype, 'start', now)
+Move.prototype.running = false
+Move.prototype.done = false
+Move.prototype.ease('linear')
