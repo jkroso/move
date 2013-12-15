@@ -114,42 +114,16 @@ Move.prototype.current = function(prop){
 }
 
 /**
- * Skew `x` and `y` degrees.
+ * Skew by `deg`
  *
- * @param {Number} x
- * @param {Number} y
- * @return {Move} for chaining
+ * @param {Number} deg
+ * @return {this}
  * @api public
  */
 
-Move.prototype.skew = function(x, y){
-	this.matrix.skewX += x
-	this.matrix.skewY += y
+Move.prototype.skew = function(deg){
+	this.matrix.skew += deg
 	return this
-}
-
-/**
- * Skew x by `n` degrees.
- *
- * @param {Number} n
- * @return {Move} for chaining
- * @api public
- */
-
-Move.prototype.skewX = function(n){
-	return this.skew(n, 0)
-}
-
-/**
- * Skew y by `n` degrees.
- *
- * @param {Number} n
- * @return {Move} for chaining
- * @api public
- */
-
-Move.prototype.skewY = function(n){
-	return this.skew(0, n)
 }
 
 /**
@@ -158,7 +132,7 @@ Move.prototype.skewY = function(n){
  * @param {Number} x
  * @param {Number} y
  * @param {Number} z
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 
@@ -172,7 +146,7 @@ Move.prototype.translate = function(x, y){
  * Translate on the x axis to `n`.
  *
  * @param {Number} n
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 
@@ -185,7 +159,7 @@ Move.prototype.x = function(n){
  * Translate on the y axis to `n`.
  *
  * @param {Number} n
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 
@@ -200,13 +174,13 @@ Move.prototype.y = function(n){
  *
  * @param {Number} x
  * @param {Number} y
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 
 Move.prototype.scale = function(x, y){
-	this.matrix.scaleX += x
-	this.matrix.scaleY += y
+	this.matrix.scaleX *= x
+	this.matrix.scaleY *= y
 	return this
 }
 
@@ -214,7 +188,7 @@ Move.prototype.scale = function(x, y){
  * Scale x axis by `n`.
  *
  * @param {Number} n
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 
@@ -226,7 +200,7 @@ Move.prototype.scaleX = function(n){
  * Scale y axis by `n`.
  *
  * @param {Number} n
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 
@@ -238,7 +212,7 @@ Move.prototype.scaleY = function(n){
  * Rotate `n` degrees.
  *
  * @param {Number} n
- * @return {Move} for chaining
+ * @return {this}
  * @api public
  */
 

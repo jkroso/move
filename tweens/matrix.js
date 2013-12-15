@@ -4,14 +4,12 @@ var unmatrix = require('unmatrix')
 var keys = Object.keys
 
 module.exports = function(from, to){
-	from = normalize(from)
-	to = normalize(to)
-	return tween(from, to)
+	return tween(normalize(from), normalize(to))
 }
 
 function normalize(m){
 	if (typeof m == 'string') m = unmatrix(m)
-	return keys(m).sort().reduce(function(str, key){
+	return keys(unit).reduce(function(str, key){
 		return str + key + '(' + m[key] + unit[key] + ')'
 	}, '')
 }

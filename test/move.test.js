@@ -1,7 +1,7 @@
 
-var move = require('..')
-var chai = require('./chai')
 var prefix = require('prefix')
+var chai = require('./chai')
+var move = require('..')
 
 var transform = prefix('transform')
 
@@ -44,7 +44,7 @@ describe('move', function(){
 
 		it('should pull current value down from grandparents', function(){
 			var frame = {}
-			frame[transform] = 'rotate(0deg)scaleX(1)scaleY(1)skew(0deg)translateX(4px)translateY(0px)'
+			frame[transform] = 'translateX(4px)translateY(0px)rotate(0deg)skew(0deg)scaleX(1)scaleY(1)'
 			var obj = mv.x(5).then().then().x(-2).frame(.5)
 			obj.should.eql(frame)
 		})
