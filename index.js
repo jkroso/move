@@ -5,7 +5,7 @@ var style = require('computed-style')
 var lazy = require('lazy-property')
 var Tween = require('tween/tween')
 var unmatrix = require('unmatrix')
-var tweens = require('./tweens')
+var tween = require('./tweens')
 var prefix = require('prefix')
 var merge = require('merge')
 var clone = require('clone')
@@ -253,12 +253,12 @@ lazy(Move.prototype, 'tweens', function(){
 	for (var key in this._to) {
 		var from = this.current(key)
 		var to = this._to[key]
-		var fn = typeof from == 'string' && tweens[type(from)]
-		if (!fn) fn = tweens[defaultTypes[key] || 'px']
+		var fn = typeof from == 'string' && tween[type(from)]
+		if (!fn) fn = tween[defaultTypes[key] || 'px']
 		tweens[key] = fn(from, to)
 	}
 	return tweens
-}
+})
 
 /**
  * determine type of `css` value
