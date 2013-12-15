@@ -4,7 +4,6 @@ var Emitter = require('emitter/light')
 var style = require('computed-style')
 var lazy = require('lazy-property')
 var Tween = require('tween/tween')
-var reset = Tween.prototype.reset
 var unmatrix = require('unmatrix')
 var tweens = require('./tweens')
 var prefix = require('prefix')
@@ -249,35 +248,22 @@ Move.prototype.frame = function(p){
 	return curr
 }
 
-/**
- * generate tweens
- *
- * @return {Object}
- * @api private
- */
-
-Move.prototype.makeTweens = function(){
+lazy(Move.prototype, 'tweens', function(){
 	var tweens = {}
 	for (var key in this._to) {
 		var from = this.current(key)
 		var to = this._to[key]
-		tweens[key] = tween(key, from, to)
+		var fn = typeof from == 'string' && tweens[type(from)]
+		if (!fn) fn = tweens[defaultTypes[key] || 'px']
+		tweens[key] = fn(from, to)
 	}
 	return tweens
 }
 
-function tween(prop, from, to){
-	var fn = typeof from == 'string' && tweens[type(from)]
-	if (!fn) fn = tweens[defaultTypes[prop] || 'px']
-	return fn(from, to)
-}
-
-lazy(Move.prototype, 'tweens', Move.prototype.makeTweens)
-
 /**
  * determine type of `css` value
  *
- * @param {String|Number} css
+ * @param {String} css
  * @return {String}
  * @api private
  */
@@ -286,21 +272,6 @@ function type(css){
 	if (/^matrix(3d)?\([^)]*\)$/.test(css)) return 'matrix'
 	if (/^[-.\d]+px/.test(css)) return 'px'
 	if (parseColor(css)) return 'color'
-}
-
-/**
- * reset the animation so it can be re-used
- *
- * @return {this}
- * @api public
- */
-
-Move.prototype.reset = function(){
-	var tweens = this.tweens
-	lazy(this, 'tweens', this.makeTweens)
-	reset.call(this)
-	this._curr = {}
-	return this
 }
 
 /**
@@ -338,7 +309,7 @@ Move.prototype.run = function(n){
 		else raf(loop)
 	})
 	this.running = true
-	reset.call(this)
+	this.reset()
 	return this
 }
 
