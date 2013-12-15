@@ -168,7 +168,6 @@ Move.prototype.translate = function(x, y, z){
 	return this
 }
 
-
 /**
  * Translate on the x axis to `n`.
  *
@@ -272,7 +271,7 @@ Move.prototype.matrix = function(){
 Move.prototype.frame = function(p){
 	var tweens = this.tweens
 	var curr = this._curr
-	for (var k in tweens) curr[k] = tweens[k].frame(p)
+	for (var k in tweens) curr[k] = tweens[k](p)
 	return curr
 }
 
@@ -294,9 +293,9 @@ Move.prototype.makeTweens = function(){
 }
 
 function tween(prop, from, to){
-	var Tween = typeof from == 'string' && tweens[type(from)]
-	if (!Tween) Tween = tweens[defaultTypes[prop] || 'px']
-	return new Tween(from, to)
+	var fn = typeof from == 'string' && tweens[type(from)]
+	if (!fn) fn = tweens[defaultTypes[prop] || 'px']
+	return fn(from, to)
 }
 
 lazy(Move.prototype, 'tweens', Move.prototype.makeTweens)

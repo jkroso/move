@@ -1,9 +1,11 @@
 
-var Tween = require('tween/number')
-
-module.exports = Tween.extend(function Number(from, to){
-	Tween.call(this, parse(from), parse(to))
-}, 'final')
+module.exports = function(from, to){
+	from = parse(from)
+	to = parse(to)
+	return function frame(n){
+		return from + (to - from) * n
+	}
+}
 
 function parse(px){
 	return parseFloat(px, 10) || 0

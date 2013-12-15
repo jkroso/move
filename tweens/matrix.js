@@ -1,38 +1,19 @@
 
-var Tween = require('tween/object')
-var matrix = require('unmatrix')
-var decompose = matrix.decompose
-var parseString = matrix.parse
-var frame = Tween.prototype.frame
+var tween = require('string-tween')
+var unmatrix = require('unmatrix')
+var keys = Object.keys
 
-module.exports = Matrix
-
-function Matrix(from, to){
-	Tween.call(this, parse(from), parse(to))
+module.exports = function(from, to){
+	from = normalize(from + '')
+	to = normalize(to + '')
+	return tween(from, to)
 }
 
-Tween.extend(Matrix, 'final')
-
-Matrix.prototype.frame = function(p){
-	return toString(frame.call(this, p))
-}
-
-function parse(m){
-	return decompose(typeof m == 'string'
-		? parseString(m)
-		: [
-				m.m11, m.m12,
-				m.m21, m.m22,
-				m.m41, m.m42,
-			])
-}
-
-function toString(props) {
-	var str = ''
-	for(var k in props) {
-		str += k + '(' + props[k] + unit[k] + ')'
-	}
-	return str
+function normalize(m){
+	if (typeof m == 'string') m = unmatrix(m)
+	return keys(m).sort().reduce(function(str, key){
+		return str + key + '(' + m[key] + unit[key] + ')'
+	}, '')
 }
 
 var unit = {

@@ -1,19 +1,9 @@
 
-var Tween = require('tween/number')
-var frame = Tween.prototype.frame
+var tween = require('./number')
 
-module.exports = PX
-
-Tween.extend(PX, 'final')
-
-function PX(from, to){
-	Tween.call(this, parse(from), parse(to))
-}
-
-PX.prototype.frame = function(progress) {
-	return frame.call(this, progress).toFixed(1) + 'px'
-};
-
-function parse(px){
-	return parseFloat(px, 10) || 0
+module.exports = function(from, to){
+	var frame = tween(from, to)
+	return function(n){
+		return frame(n).toFixed(1) + 'px'
+	}
 }
