@@ -11,6 +11,7 @@
     "jkroso/prefix": "0.1.0",
     "component/raf": "1.1.1",
     "component/css": "0.0.2",
+    "jkroso/clone": "0.3.0",
     "jkroso/tween": "0.3.2",
     "yields/merge": "1.0.0"
   },

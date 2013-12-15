@@ -4,8 +4,8 @@ var unmatrix = require('unmatrix')
 var keys = Object.keys
 
 module.exports = function(from, to){
-	from = normalize(from + '')
-	to = normalize(to + '')
+	from = normalize(from)
+	to = normalize(to)
 	return tween(from, to)
 }
 

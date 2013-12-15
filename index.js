@@ -5,10 +5,11 @@ var style = require('computed-style')
 var lazy = require('lazy-property')
 var Tween = require('tween/tween')
 var reset = Tween.prototype.reset
+var unmatrix = require('unmatrix')
 var tweens = require('./tweens')
-var CSSMatrix = WebKitCSSMatrix
 var prefix = require('prefix')
 var merge = require('merge')
+var clone = require('clone')
 var raf = require('raf')
 var css = require('css')
 
@@ -122,8 +123,8 @@ Move.prototype.current = function(prop){
  */
 
 Move.prototype.skew = function(x, y){
-	x && this.skewX(x)
-	y && this.skewY(y)
+	this.matrix.skewX += x
+	this.matrix.skewY += y
 	return this
 }
 
@@ -136,8 +137,7 @@ Move.prototype.skew = function(x, y){
  */
 
 Move.prototype.skewX = function(n){
-	this._to[transform] = this.matrix().skewX(n)
-	return this
+	return this.skew(n, 0)
 }
 
 /**
@@ -149,8 +149,7 @@ Move.prototype.skewX = function(n){
  */
 
 Move.prototype.skewY = function(n){
-	this._to[transform] = this.matrix().skewY(n)
-	return this
+	return this.skew(0, n)
 }
 
 /**
@@ -163,8 +162,9 @@ Move.prototype.skewY = function(n){
  * @api public
  */
 
-Move.prototype.translate = function(x, y, z){
-	this._to[transform] = this.matrix().translate(x, y, z || 0)
+Move.prototype.translate = function(x, y){
+	this.matrix.translateX += x
+	this.matrix.translateY += y
 	return this
 }
 
@@ -178,7 +178,7 @@ Move.prototype.translate = function(x, y, z){
 
 Move.prototype.translateX =
 Move.prototype.x = function(n){
-	return this.translate(n, 0, 0)
+	return this.translate(n, 0)
 }
 
 /**
@@ -191,7 +191,7 @@ Move.prototype.x = function(n){
 
 Move.prototype.translateY =
 Move.prototype.y = function(n){
-	return this.translate(0, n, 0)
+	return this.translate(0, n)
 }
 
 /**
@@ -205,7 +205,8 @@ Move.prototype.y = function(n){
  */
 
 Move.prototype.scale = function(x, y){
-	this._to[transform] = this.matrix().scale(x, y, 1)
+	this.matrix.scaleX += x
+	this.matrix.scaleY += y
 	return this
 }
 
@@ -242,7 +243,7 @@ Move.prototype.scaleY = function(n){
  */
 
 Move.prototype.rotate = function(n){
-	this._to[transform] = this.matrix().rotate(0, 0, n)
+	this.matrix.rotate += n
 	return this
 }
 
@@ -253,12 +254,11 @@ Move.prototype.rotate = function(n){
  * @api private
  */
 
-Move.prototype.matrix = function(){
-	if (transform in this._to) return this._to[transform]
+lazy(Move.prototype, 'matrix', function(){
 	var matrix = this.current(transform)
-	if (typeof matrix == 'string') matrix = new CSSMatrix(matrix)
+	if (typeof matrix == 'string') matrix = unmatrix(matrix)
 	return this._to[transform] = matrix
-}
+})
 
 /**
  * create a frame at point `p` through the animation
@@ -424,7 +424,7 @@ var DeferredMove = Move.extend(function(parent){
 DeferredMove.prototype.current = function(prop){
 	var parent = this.parent
 	while (parent) {
-		if (prop in parent._to) return parent._to[prop]
+		if (prop in parent._to) return clone(parent._to[prop])
 		parent = parent.parent
 	}
 	return style(this.el)[prop]
