@@ -16,14 +16,6 @@
     "component/color-parser": "0.1.0",
     "jkroso/unmatrix": "0.0.1"
   },
-  "development": {
-    "visionmedia/mocha": "1.13.0",
-    "chaijs/chai-spies": "0.5.1",
-    "jkroso/serve": "1.5.1",
-    "chaijs/chai": "1.8.1"
-  },
-  "scripts": [
-    "index.js"
-  ],
+  "scripts": ["index.js"],
   "license": "MIT"
 }

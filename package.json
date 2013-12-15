@@ -2,15 +2,17 @@
   "name": "move",
   "version": "0.1.0",
   "description": "pure JavaScript DOM animation",
-  "dependencies": {},
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jkroso/move.git"
+  "dependencies": {
+    "lazy-property": "*"
   },
-  "bugs": {
-    "url": "https://github.com/jkroso/move/issues"
+  "devDependencies": {
+    "serve": "jkroso/serve",
+    "chai-spies": "*",
+    "mocha": "*",
+    "chai": "*"
   },
+  "repository": "git://github.com/jkroso/move.git",
+  "bugs": "https://github.com/jkroso/move/issues",
   "keywords": ["animation"],
   "author": "Jake Rosoman",
   "license": "MIT",

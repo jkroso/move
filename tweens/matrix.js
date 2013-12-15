@@ -30,7 +30,7 @@ function parse(m){
 function toString(props) {
 	var str = ''
 	for(var k in props) {
-			str += k + '(' + props[k] + unit[k] + ') '
+		str += k + '(' + props[k] + unit[k] + ')'
 	}
 	return str
 }

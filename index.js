@@ -2,6 +2,7 @@
 var parseColor = require('color-parser')
 var Emitter = require('emitter/light')
 var style = require('computed-style')
+var lazy = require('lazy-property')
 var Tween = require('tween/tween')
 var reset = Tween.prototype.reset
 var tweens = require('./tweens')
@@ -36,10 +37,6 @@ var defaultTypes = {
   transform: 'matrix'
 }
 defaultTypes[transform] = 'matrix'
-
-function defaultType(key){
-	return defaultTypes[key] || 'px'
-}
 
 /**
  * the Move class
@@ -273,25 +270,21 @@ Move.prototype.matrix = function(){
  */
 
 Move.prototype.frame = function(p){
-	var tweens = this.tweens()
+	var tweens = this.tweens
 	var curr = this._curr
-	for (var k in tweens) {
-		curr[k] = tweens[k].frame(p)
-	}
+	for (var k in tweens) curr[k] = tweens[k].frame(p)
 	return curr
 }
 
 /**
- * Generate tweens. This should be called
- * as late as possible
+ * generate tweens
  *
  * @return {Object}
  * @api private
  */
 
-Move.prototype.tweens = function(){
-	if (this._tweens) return this._tweens
-	var tweens = this._tweens = {}
+Move.prototype.makeTweens = function(){
+	var tweens = {}
 	for (var key in this._to) {
 		var from = this.current(key)
 		var to = this._to[key]
@@ -302,9 +295,11 @@ Move.prototype.tweens = function(){
 
 function tween(prop, from, to){
 	var Tween = typeof from == 'string' && tweens[type(from)]
-	if (!Tween) Tween = tweens[defaultType(prop)]
+	if (!Tween) Tween = tweens[defaultTypes[prop] || 'px']
 	return new Tween(from, to)
 }
+
+lazy(Move.prototype, 'tweens', Move.prototype.makeTweens)
 
 /**
  * determine type of `css` value
@@ -328,10 +323,8 @@ function type(css){
  */
 
 Move.prototype.reset = function(){
-	var tweens = this.tweens()
-	for (var tween in tweens) {
-		tweens[tween].reset().ease(this._ease)
-	}
+	var tweens = this.tweens
+	lazy(this, 'tweens', this.makeTweens)
 	reset.call(this)
 	this._curr = {}
 	return this
@@ -350,6 +343,35 @@ Move.prototype.duration = function(n){
 	this._duration = n
 	return this
 }
+
+/**
+ * run the animation with an optional callback or duration
+ *
+ * @param {Number|String|Function} [n]
+ * @return {this}
+ * @api public
+ */
+
+Move.prototype.end =
+Move.prototype.run = function(n){
+	if (n != null) {
+		if (typeof n == 'function') this.on('end', n)
+		else this.duration(n)
+	}
+	var self = this
+	raf(function loop(){
+		css(self.el, self.next())
+		if (self.done) self.emit('end')
+		else raf(loop)
+	})
+	this.running = true
+	reset.call(this)
+	return this
+}
+
+Move.prototype.on('end', function(){
+	this.running = false
+})
 
 /**
  * Create a `DeferredMove` instance which will run
@@ -420,32 +442,3 @@ DeferredMove.prototype.current = function(prop){
 DeferredMove.prototype.pop = function(){
 	return this.parent
 }
-
-/**
- * run the animation with an optional callback or duration
- *
- * @param {Number|String|Function} [n]
- * @return {this}
- * @api public
- */
-
-Move.prototype.end =
-Move.prototype.run = function(n){
-	if (n != null) {
-		if (typeof n == 'function') this.on('end', n)
-		else this.duration(n)
-	}
-	var self = this
-	raf(function loop(){
-		css(self.el, self.next())
-		if (self.done) self.emit('end')
-		else raf(loop)
-	})
-	this.running = true
-	reset.call(this)
-	return this
-}
-
-Move.prototype.on('end', function(){
-	this.running = false
-})

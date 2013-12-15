@@ -44,11 +44,9 @@ describe('move', function(){
 
 		it('should pull current value down from grandparents', function(){
 			var frame = {}
-			frame[transform] = 'matrix(1.000000, 0.000000, 0.000000, 1.000000, 3.000000, 0.000000)'
-			mv.x(5)
-				.then()
-					.then()
-						.x(-2).frame(1).should.eql(frame)
+			frame[transform] = 'translateX(4px)translateY(0px)rotate(0deg)skew(0deg)scaleX(1)scaleY(1)'
+			var obj = mv.x(5).then().then().x(-2).frame(.5)
+			obj.should.eql(frame)
 		})
 
 		it('should not auto-run deferred moves', function(done){
