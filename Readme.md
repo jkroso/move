@@ -1,19 +1,17 @@
 
 # move
 
-  Pure JS DOM animation. Still at the experimental stage. Inspiration coming from [move.js](//github.com/visionmedia/move.js) and [firmin](http://extralogical.net/projects/firmin) though by staying in JS as much as possible I hope to be able to go a lot further.
+  Pure JS DOM animation. Still at the experimental stage. Inspiration coming from [move.js](//github.com/visionmedia/move.js) and [firmin](http://extralogical.net/projects/firmin) though by staying in JS as much as possible I hope to be able to go a lot further. 
 
-## limitations
-
-- performance: Should be plenty fast but CSS animations will probably always be faster.
-
-- x-browser: At this stage it only works in webkit based browsers or browsers with a `WebKitCSSMatrix` polyfill. This is only temporary but it will take a bit of effort to work around.
+  Note: it's plenty fast for most use cases but CSS animations will probably always be faster.
 
 ## Installation
 
-_With [packin](//github.com/jkroso/packin) or [component](//github.com/component/component)_
+With your favourite package manager:
 
-    $ packin add jkroso/move
+- [packin](//github.com/jkroso/packin): `packin add jkroso/move`
+- [component](//github.com/component/component#installing-packages): `component install jkroso/move`
+- [npm](//npmjs.org/doc/cli/npm-install.html): `npm install jkroso/move`
 
 then in your app:
 
@@ -39,4 +37,4 @@ This will enlarge the document while rotating it clockwise and changing the back
 
 ## Running the tests
 
-Just run `make` and navigate your browser to the test directory.
+Just run `make` and navigate your browser to [test/index.html](test/index.html)
