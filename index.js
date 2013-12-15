@@ -1,14 +1,16 @@
 
 var parseColor = require('color-parser')
-var Emitter = require('emitter/light')
+var extensible = require('extensible')
 var style = require('computed-style')
 var lazy = require('lazy-property')
-var Tween = require('tween/tween')
 var unmatrix = require('unmatrix')
+var Emitter = require('emitter')
 var tween = require('./tweens')
 var prefix = require('prefix')
 var merge = require('merge')
 var clone = require('clone')
+var ease = require('ease')
+var now = require('now')
 var raf = require('raf')
 var css = require('css')
 
@@ -46,8 +48,8 @@ defaultTypes[transform] = 'matrix'
  */
 
 function Move(el){
-	this._to = {}
 	this._curr = {}
+	this._to = {}
 	this.el = el
 }
 
@@ -56,8 +58,15 @@ function Move(el){
  */
 
 merge(Move.prototype, Emitter.prototype)
-merge(Move.prototype, Tween.prototype)
-merge(Move, Tween)
+extensible(Move)
+
+/**
+ * defaults
+ */
+
+lazy(Move.prototype, 'start', now)
+Move.prototype.running = false
+Move.prototype.done = false
 
 /**
  * add `prop` to animation. When the animation is run
@@ -289,6 +298,43 @@ Move.prototype.duration = function(n){
 }
 
 /**
+ * Set easing function to `fn`.
+ *
+ *   tween.ease('in-out-sine')
+ *
+ * @param {String|Function} fn
+ * @return {this}
+ * @api public
+ */
+
+Move.prototype.ease = function(fn){
+	if (typeof fn == 'string') fn = ease[fn]
+	if (!fn) throw new Error('invalid easing function')
+	this._ease = fn
+	return this
+}
+
+Move.prototype.ease('linear') // default
+
+/**
+ * generate the next frame
+ *
+ * @return {Any}
+ * @api public
+ */
+
+Move.prototype.next = function(){
+	var progress = (now() - this.start) / this._duration
+
+	if (progress >= 1) {
+		this.done = true
+		return this._to
+	}
+
+	return this.frame(this._ease(progress))
+}
+
+/**
  * run the animation with an optional callback or duration
  *
  * @param {Number|String|Function} [n]
@@ -309,7 +355,6 @@ Move.prototype.run = function(n){
 		else raf(loop)
 	})
 	this.running = true
-	this.reset()
 	return this
 }
 

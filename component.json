@@ -7,14 +7,17 @@
     "component/color-parser": "0.1.0",
     "jkroso/computed-style": "0.1.0",
     "jkroso/string-tween": "0.1.0",
+    "yields/extensible": "0.1.0",
     "jkroso/unmatrix": "0.1.0",
+    "component/ease": "1.0.0",
     "jkroso/emitter": "0.9.0",
     "jkroso/prefix": "0.1.0",
     "component/raf": "1.1.1",
     "component/css": "0.0.2",
     "jkroso/clone": "0.3.0",
-    "jkroso/tween": "0.3.2",
-    "yields/merge": "1.0.0"
+    "yields/merge": "1.0.0",
+    "jkroso/type": "1.0.2",
+    "jkroso/now": "0.1.1"
   },
   "scripts": ["index.js"],
   "license": "MIT"
