@@ -1,18 +1,15 @@
 
 var parseColor = require('color-parser')
 var extensible = require('extensible')
-var style = require('computed-style')
 var lazy = require('lazy-property')
 var unmatrix = require('unmatrix')
 var Emitter = require('emitter')
 var tween = require('./tweens')
 var prefix = require('prefix')
-var merge = require('merge')
 var clone = require('clone')
 var ease = require('ease')
 var now = require('now')
 var raf = require('raf')
-var css = require('css')
 
 module.exports = Move
 
@@ -56,7 +53,7 @@ function Move(el){
  * mixin methods
  */
 
-merge(Move.prototype, Emitter.prototype)
+Emitter(Move.prototype)
 extensible(Move)
 
 /**
@@ -109,7 +106,7 @@ Move.prototype.sub = function(prop, n){
  */
 
 Move.prototype.current = function(prop){
-	return style(this.el)[prop]
+	return getComputedStyle(this.el)[prop]
 }
 
 /**
@@ -351,8 +348,9 @@ Move.prototype.on('end', function(){
 	this.running = false
 })
 
-Move.prototype.apply = function(style){
-	css(this.el, style)
+Move.prototype.apply = function(css){
+	var el = this.el.style
+	for (var k in css) el[k] = css[k]
 }
 
 /**
