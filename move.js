@@ -1,10 +1,9 @@
 
-var parseColor = require('color-parser')
 var extensible = require('extensible')
 var lazy = require('lazy-property')
 var unmatrix = require('unmatrix')
 var Emitter = require('emitter')
-var tween = require('./tweens')
+var tween = require('./tween')
 var prefix = require('prefix')
 var clone = require('clone')
 var ease = require('ease')
@@ -19,22 +18,6 @@ module.exports = Move
  */
 
 var transform = prefix('transform')
-
-/**
- * map of default types
- * @type {Object}
- */
-
-var defaultTypes = {
-  fillOpacity: 'number',
-  fontWeight: 'number',
-  opacity: 'number',
-  zIndex: 'number',
-  zoom: 'number',
-  transform: 'matrix',
-  d: 'path'
-}
-defaultTypes[transform] = 'matrix'
 
 /**
  * the Move class
@@ -248,28 +231,10 @@ Move.prototype.frame = function(p){
 lazy(Move.prototype, 'tweens', function(){
 	var tweens = {}
 	for (var key in this._to) {
-		var from = this.current(key)
-		var to = this._to[key]
-		var fn = typeof from == 'string' && tween[type(from)]
-		if (!fn) fn = tween[defaultTypes[key] || 'px']
-		tweens[key] = fn(from, to)
+		tweens[key] = tween(key, this.current(key), this._to[key])
 	}
 	return tweens
 })
-
-/**
- * determine type of `css` value
- *
- * @param {String} css
- * @return {String}
- * @api private
- */
-
-function type(css){
-	if (/^matrix(3d)?\([^)]*\)$/.test(css)) return 'matrix'
-	if (/^[-.\d]+px/.test(css)) return 'px'
-	if (parseColor(css)) return 'color'
-}
 
 /**
  * set duration to `n`. if `n` is a string it

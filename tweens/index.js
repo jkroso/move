@@ -1,5 +1,0 @@
-exports.number = require('./number')
-exports.matrix = require('./matrix')
-exports.color = require('./color')
-exports.path = require('./path')
-exports.px = require('./px')
