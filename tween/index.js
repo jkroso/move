@@ -26,7 +26,7 @@ defaultTypes[prefix('transform')] = 'matrix'
  */
 
 function tween(prop, from, to){
-	var fn = typeof from == 'string' && tween[type(from)]
+	var fn = typeof to == 'string' && tween[type(to)]
 	if (!fn) fn = tween[defaultTypes[prop] || 'px']
 	return fn(from, to)
 }
