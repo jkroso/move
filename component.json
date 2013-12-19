@@ -5,6 +5,7 @@
   "keywords": ["animation"],
   "dependencies": {
     "component/color-parser": "0.1.0",
+    "jkroso/parse-duration": "0.1.0",
     "jkroso/string-tween": "0.1.0",
     "jkroso/extensible": "0.2.0",
     "jkroso/unmatrix": "0.1.0",
