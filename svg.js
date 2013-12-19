@@ -1,11 +1,12 @@
 
+var prefix = require('prefix')
 var Move = require('./move')
 
 var attrs = [
-	'cx', 
-	'cy', 
-	'd', 
-	'x', 
+	'cx',
+	'cy',
+	'd',
+	'x',
 	'y'
 ].reduce(function(attrs, key){
 	attrs[key] = true
@@ -20,7 +21,8 @@ module.exports = Move.extend({
 	},
 	current: function(k){
 		if (k in attrs) return this.el.getAttribute(k)
-		return getComputedStyle(el)[prefix(k)]
+		return getComputedStyle(this.el)[prefix(k)]
+			|| this.el.getAttribute(k)
 	},
 	apply: function(style){
 		for (var k in style) {
