@@ -2,6 +2,7 @@
 var extensible = require('extensible')
 var lazy = require('lazy-property')
 var unmatrix = require('unmatrix')
+var ms = require('parse-duration')
 var Emitter = require('emitter')
 var tween = require('./tween')
 var prefix = require('prefix')
@@ -237,15 +238,16 @@ lazy(Move.prototype, 'tweens', function(){
 })
 
 /**
- * set duration to `n`. if `n` is a string it
- * is assumed to be in seconds
+ * set duration to `n` milliseconds. You can also
+ * pass a string if that allows you to express your
+ * duration more clearly
  *
  * @param {Number|String} n
  * @return {this}
  */
 
 Move.prototype.duration = function(n){
-	if (typeof n == 'string') n = parseFloat(n) * 1000
+	if (typeof n == 'string') n = ms(n)
 	this._duration = n
 	return this
 }
@@ -319,25 +321,26 @@ Move.prototype.apply = function(css){
 }
 
 /**
- * Create a `DeferredMove` instance which will run
+ * Create a new Move instance which will run
  * when `this` move completes. Optionally you can
- * pass in a Move instance in which case it will be
- * be run on completion of `this` animation.
+ * pass in a Move instance or Function to be run 
+ * on completion of `this` animation.
  *
- * @param {Move} [move]
+ * @param {Move|Function} [move]
  * @return {this|DeferredMove}
  * @api public
  */
 
 Move.prototype.then = function(move){
 	if (move) {
-		this.on('end', function(){
-			move.run()
-		})
+		var fn  = typeof move != 'function'
+			? function(){ move.run() }
+			: move
+		this.on('end', fn)
 		if (!this.running) this.run()
 		return this
 	}
-	move = new DeferredMove(this)
+	move = defer(this)
 	this.then(move)
 	return move
 }
@@ -350,42 +353,21 @@ Move.prototype.then = function(move){
  * @api private
  */
 
-var DeferredMove = Move.extend(function(parent){
-	Move.call(this, parent.el)
-	this._duration = parent._duration
-	this._ease = parent._ease
-	this.parent = parent
-	this.running = true
-}, 'final')
-
-/**
- * check parent tween incase `prop` is currently being
- * animated. If it is get the final frame
- *
- * @param {String} prop
- * @return {CSS}
- * @api private
- */
-
-DeferredMove.prototype.current = function(prop){
-	var parent = this.parent
-	while (parent) {
-		if (prop in parent._to) return clone(parent._to[prop])
-		parent = parent.parent
+function defer(parent){
+	var child = new parent.constructor(parent.el)
+	child._duration = parent._duration
+	child._ease = parent._ease
+	child.parent = parent
+	child.running = true
+	child.current = function(prop){
+		var parent = this.parent
+		while (parent) {
+			if (prop in parent._to) return clone(parent._to[prop])
+			parent = parent.parent
+		}
+		return this.constructor.prototype.current.call(this, prop)
 	}
-	return style(this.el)[prop]
-}
-
-/**
- * sugar for `this.parent`. Sometimes looks nicer in
- * long chains
- *
- * @return {Move}
- * @api public
- */
-
-DeferredMove.prototype.pop = function(){
-	return this.parent
+	return child
 }
 
 /**
