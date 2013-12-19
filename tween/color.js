@@ -15,6 +15,7 @@ module.exports = function(from, to){
 
 function rgba(color){
 	color = parse(color)
+	if (!color) return [255,255,255,0] // transparent
 	return [
 		color.r,
 		color.g,
