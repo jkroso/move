@@ -295,12 +295,8 @@ Move.prototype.next = function(){
  * @api public
  */
 
-Move.prototype.end =
 Move.prototype.run = function(n){
-	if (n != null) {
-		if (typeof n == 'function') this.on('end', n)
-		else this.duration(n)
-	}
+	if (n != null) this.duration(n)
 	var self = this
 	raf(function loop(){
 		self.apply(self.next())
@@ -323,7 +319,7 @@ Move.prototype.apply = function(css){
 /**
  * Create a new Move instance which will run
  * when `this` move completes. Optionally you can
- * pass in a Move instance or Function to be run 
+ * pass in a Move instance or Function to be run
  * on completion of `this` animation.
  *
  * @param {Move|Function} [move]
