@@ -2,49 +2,54 @@
 <title>path examples</title>
 
 <style>
-	body {
-		margin: 0;
-		padding: 60px;
-	}
-	svg {
-		width:100%;
-		height:100%;
-	}
-	svg path {
-		stroke-linecap: round;
-		stroke-width: 4;
-		stroke: blue;
-		fill: none;
-	}
+  body {
+    margin: 0;
+    padding: 60px;
+  }
+  svg {
+    width:100%;
+    height:100%;
+  }
+  svg path {
+    stroke-linecap: round;
+    stroke-width: 4;
+    stroke: blue;
+    fill: none;
+  }
 </style>
 
 <svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" link="http://www.w3.org/1999/xlink">
-	<path id="circle" d="m 200 100 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"</path>
+  <path id="circle" d="m 200 100 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"</path>
 </svg>
 
 <script>
-	var move = require('..')
+  var move = require('..')
 
-	move(circle)
-		.set('d', 'm 200 100 l 100 100 -100 100 -100 -100 100 -100')
-		.ease('out-sine')
-		.run('.5s')
-		.then()
-			.set('d', '\
-				m 300,200 \
-				c 0,50 -50,50 -50,0 \
-				s -50,-50 -50,0 \
-				s -50,50 -50,0 \
-				s -50,-50 -50,0')
-			.then()
-				.set('d', '\
-					m 200 150 \
-					l 50 47 \
-					a 6 6 0 0 1 0 6 \
-					l -50 47 \
-					l 0 -100')
-				.then()
-					.set('stroke', 'red')
-					.set('stroke-width', 2)
-					.set('fill', 'orange')
+  move(circle)
+    .set('d', '\
+      m 200 100 \
+      l 100 100 \
+      l -100 100 \
+      l -100 -100 \
+      l 100 -100')
+    .ease('out-sine')
+    .duration('.5s')
+    .then()
+      .set('d', '\
+        m 300,200 \
+        c 0,50 -50,50 -50,0 \
+        s -50,-50 -50,0 \
+        s -50,50 -50,0 \
+        s -50,-50 -50,0')
+      .then()
+        .set('d', '\
+          m 200 150 \
+          l 50 47 \
+          a 6 6 0 0 1 0 6 \
+          l -50 47 \
+          l 0 -100')
+
+  move(circle)
+    .set('stroke', 'red')
+    .run('1.5s')
 </script>
