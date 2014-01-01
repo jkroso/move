@@ -4,9 +4,7 @@ serve: node_modules
 
 node_modules: *.json
 	@packin install \
-		--meta package.json,component.json,deps.json \
-		--folder node_modules \
-		--executables \
-		--no-retrace
+		--meta deps.json,package.json,component.json \
+		--folder node_modules
 
 .PHONY: serve
