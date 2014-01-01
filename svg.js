@@ -3,11 +3,9 @@ var prefix = require('prefix')
 var Move = require('./move')
 
 var attrs = [
-	'cx',
-	'cy',
-	'd',
-	'x',
-	'y'
+	'cx', 'cy',
+	'x',  'y',
+	'd'
 ].reduce(function(attrs, key){
 	attrs[key] = true
 	return attrs
