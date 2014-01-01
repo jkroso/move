@@ -2,33 +2,33 @@
 <title>transform example</title>
 
 <style>
-	body {
-		margin: 0;
-		padding: 60px;
-	}
-	#square {
-		border: 1px solid #888;
-		width: 100px;
-		height: 100px;
-		background-color: white;
-	}
+  body {
+    margin: 0;
+    padding: 60px;
+  }
+  #square {
+    border: 1px solid #888;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+  }
 </style>
 
 <div id="square"></div>
 
 <script>
-	var move = require('..')
+  var move = require('..')
 
-	move(document.getElementById('square'))
-		.ease('out-sine')
-		.duration('.7s')
-		.set('background-color', 'aliceblue')
-		.translate(500, 200)
-		.skew(50)
-		.scaleX(4)
-		.then()
-			.set('background-color', 'white')
-			.scaleX(1/4)
-			.skew(-50)
-			.translate(-500, -200)
+  move(document.getElementById('square'))
+    .ease('out-sine')
+    .duration('.7s')
+    .set('background-color', 'aliceblue')
+    .translate(500, 200)
+    .skew(50)
+    .scaleX(4)
+    .then()
+      .set('background-color', 'white')
+      .scaleX(1/4)
+      .skew(-50)
+      .translate(-500, -200)
 </script>

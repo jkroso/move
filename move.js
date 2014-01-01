@@ -28,9 +28,9 @@ var transform = prefix('transform')
  */
 
 function Move(el){
-	this._curr = {}
-	this._to = {}
-	this.el = el
+  this._curr = {}
+  this._to = {}
+  this.el = el
 }
 
 /**
@@ -50,8 +50,8 @@ extensible(Move)
  */
 
 Move.prototype.set = function(prop, to){
-	this._to[prefix(prop)] = to
-	return this
+  this._to[prefix(prop)] = to
+  return this
 }
 
 /**
@@ -63,9 +63,9 @@ Move.prototype.set = function(prop, to){
  */
 
 Move.prototype.add = function(prop, n){
-	prop = prefix(prop)
-	var curr = parseInt(this.current(prop), 10)
-	return this.set(prop, curr + n)
+  prop = prefix(prop)
+  var curr = parseInt(this.current(prop), 10)
+  return this.set(prop, curr + n)
 }
 
 /**
@@ -77,9 +77,9 @@ Move.prototype.add = function(prop, n){
  */
 
 Move.prototype.sub = function(prop, n){
-	prop = prefix(prop)
-	var curr = parseInt(this.current(prop), 10)
-	return this.set(prop, curr - n)
+  prop = prefix(prop)
+  var curr = parseInt(this.current(prop), 10)
+  return this.set(prop, curr - n)
 }
 
 /**
@@ -90,7 +90,7 @@ Move.prototype.sub = function(prop, n){
  */
 
 Move.prototype.current = function(prop){
-	return getComputedStyle(this.el)[prop]
+  return getComputedStyle(this.el)[prop]
 }
 
 /**
@@ -102,8 +102,8 @@ Move.prototype.current = function(prop){
  */
 
 Move.prototype.skew = function(deg){
-	this.matrix.skew += deg
-	return this
+  this.matrix.skew += deg
+  return this
 }
 
 /**
@@ -117,9 +117,9 @@ Move.prototype.skew = function(deg){
  */
 
 Move.prototype.translate = function(x, y){
-	this.matrix.translateX += x
-	this.matrix.translateY += y
-	return this
+  this.matrix.translateX += x
+  this.matrix.translateY += y
+  return this
 }
 
 /**
@@ -132,7 +132,7 @@ Move.prototype.translate = function(x, y){
 
 Move.prototype.translateX =
 Move.prototype.x = function(n){
-	return this.translate(n, 0)
+  return this.translate(n, 0)
 }
 
 /**
@@ -145,7 +145,7 @@ Move.prototype.x = function(n){
 
 Move.prototype.translateY =
 Move.prototype.y = function(n){
-	return this.translate(0, n)
+  return this.translate(0, n)
 }
 
 /**
@@ -159,9 +159,9 @@ Move.prototype.y = function(n){
  */
 
 Move.prototype.scale = function(x, y){
-	this.matrix.scaleX *= x
-	this.matrix.scaleY *= y
-	return this
+  this.matrix.scaleX *= x
+  this.matrix.scaleY *= y
+  return this
 }
 
 /**
@@ -173,7 +173,7 @@ Move.prototype.scale = function(x, y){
  */
 
 Move.prototype.scaleX = function(n){
-	return this.scale(n, 1, 1)
+  return this.scale(n, 1, 1)
 }
 
 /**
@@ -185,7 +185,7 @@ Move.prototype.scaleX = function(n){
  */
 
 Move.prototype.scaleY = function(n){
-	return this.scale(1, n, 1)
+  return this.scale(1, n, 1)
 }
 
 /**
@@ -197,8 +197,8 @@ Move.prototype.scaleY = function(n){
  */
 
 Move.prototype.rotate = function(n){
-	this.matrix.rotate += n
-	return this
+  this.matrix.rotate += n
+  return this
 }
 
 /**
@@ -209,9 +209,9 @@ Move.prototype.rotate = function(n){
  */
 
 lazy(Move.prototype, 'matrix', function(){
-	var matrix = this.current(transform)
-	if (typeof matrix == 'string') matrix = unmatrix(matrix)
-	return this._to[transform] = matrix
+  var matrix = this.current(transform)
+  if (typeof matrix == 'string') matrix = unmatrix(matrix)
+  return this._to[transform] = matrix
 })
 
 /**
@@ -223,18 +223,18 @@ lazy(Move.prototype, 'matrix', function(){
  */
 
 Move.prototype.frame = function(p){
-	var tweens = this.tweens
-	var curr = this._curr
-	for (var k in tweens) curr[k] = tweens[k](p)
-	return curr
+  var tweens = this.tweens
+  var curr = this._curr
+  for (var k in tweens) curr[k] = tweens[k](p)
+  return curr
 }
 
 lazy(Move.prototype, 'tweens', function(){
-	var tweens = {}
-	for (var key in this._to) {
-		tweens[key] = tween(key, this.current(key), this._to[key])
-	}
-	return tweens
+  var tweens = {}
+  for (var key in this._to) {
+    tweens[key] = tween(key, this.current(key), this._to[key])
+  }
+  return tweens
 })
 
 /**
@@ -247,9 +247,9 @@ lazy(Move.prototype, 'tweens', function(){
  */
 
 Move.prototype.duration = function(n){
-	if (typeof n == 'string') n = ms(n)
-	this._duration = n
-	return this
+  if (typeof n == 'string') n = ms(n)
+  this._duration = n
+  return this
 }
 
 /**
@@ -263,10 +263,10 @@ Move.prototype.duration = function(n){
  */
 
 Move.prototype.ease = function(fn){
-	if (typeof fn == 'string') fn = ease[fn]
-	if (!fn) throw new Error('invalid easing function')
-	this._ease = fn
-	return this
+  if (typeof fn == 'string') fn = ease[fn]
+  if (!fn) throw new Error('invalid easing function')
+  this._ease = fn
+  return this
 }
 
 /**
@@ -277,14 +277,14 @@ Move.prototype.ease = function(fn){
  */
 
 Move.prototype.next = function(){
-	var progress = (now() - this.start) / this._duration
+  var progress = (now() - this.start) / this._duration
 
-	if (progress >= 1) {
-		this.done = true
-		progress = 1
-	}
+  if (progress >= 1) {
+    this.done = true
+    progress = 1
+  }
 
-	return this.frame(this._ease(progress))
+  return this.frame(this._ease(progress))
 }
 
 /**
@@ -296,24 +296,24 @@ Move.prototype.next = function(){
  */
 
 Move.prototype.run = function(n){
-	if (n != null) this.duration(n)
-	var self = this
-	raf(function loop(){
-		self.apply(self.next())
-		if (self.done) self.emit('end')
-		else raf(loop)
-	})
-	this.running = true
-	return this
+  if (n != null) this.duration(n)
+  var self = this
+  raf(function loop(){
+    self.apply(self.next())
+    if (self.done) self.emit('end')
+    else raf(loop)
+  })
+  this.running = true
+  return this
 }
 
 Move.prototype.on('end', function(){
-	this.running = false
+  this.running = false
 })
 
 Move.prototype.apply = function(css){
-	var el = this.el.style
-	for (var k in css) el[k] = css[k]
+  var el = this.el.style
+  for (var k in css) el[k] = css[k]
 }
 
 /**
@@ -328,17 +328,17 @@ Move.prototype.apply = function(css){
  */
 
 Move.prototype.then = function(move){
-	if (move) {
-		var fn  = typeof move != 'function'
-			? function(){ move.run() }
-			: move
-		this.on('end', fn)
-		if (!this.running) this.run()
-		return this
-	}
-	move = defer(this)
-	this.then(move)
-	return move
+  if (move) {
+    var fn  = typeof move != 'function'
+      ? function(){ move.run() }
+      : move
+    this.on('end', fn)
+    if (!this.running) this.run()
+    return this
+  }
+  move = defer(this)
+  this.then(move)
+  return move
 }
 
 /**
@@ -350,20 +350,20 @@ Move.prototype.then = function(move){
  */
 
 function defer(parent){
-	var child = new parent.constructor(parent.el)
-	child._duration = parent._duration
-	child._ease = parent._ease
-	child.parent = parent
-	child.running = true
-	child.current = function(prop){
-		var parent = this.parent
-		while (parent) {
-			if (prop in parent._to) return clone(parent._to[prop])
-			parent = parent.parent
-		}
-		return this.constructor.prototype.current.call(this, prop)
-	}
-	return child
+  var child = new parent.constructor(parent.el)
+  child._duration = parent._duration
+  child._ease = parent._ease
+  child.parent = parent
+  child.running = true
+  child.current = function(prop){
+    var parent = this.parent
+    while (parent) {
+      if (prop in parent._to) return clone(parent._to[prop])
+      parent = parent.parent
+    }
+    return this.constructor.prototype.current.call(this, prop)
+  }
+  return child
 }
 
 /**

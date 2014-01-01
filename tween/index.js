@@ -26,9 +26,9 @@ defaultTypes[prefix('transform')] = 'matrix'
  */
 
 function tween(prop, from, to){
-	var fn = typeof to == 'string' && tween[type(to)]
-	if (!fn) fn = tween[defaultTypes[prop] || 'px']
-	return fn(from, to)
+  var fn = typeof to == 'string' && tween[type(to)]
+  if (!fn) fn = tween[defaultTypes[prop] || 'px']
+  return fn(from, to)
 }
 
 tween.number = require('./number')
@@ -46,7 +46,7 @@ tween.px = require('./px')
  */
 
 function type(css){
-	if (/^matrix(3d)?\([^)]*\)$/.test(css)) return 'matrix'
-	if (/^[-.\d]+px/.test(css)) return 'px'
-	if (parseColor(css)) return 'color'
+  if (/^matrix(3d)?\([^)]*\)$/.test(css)) return 'matrix'
+  if (/^[-.\d]+px/.test(css)) return 'px'
+  if (parseColor(css)) return 'color'
 }

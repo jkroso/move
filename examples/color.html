@@ -2,28 +2,28 @@
 <title>color</title>
 
 <style>
-	body {
-		margin: 0;
-	}
-	#box {
-		width: 300px;
-		height: 300px;
-		margin: 100px auto;
-		background: blue;
-	}
+  body {
+    margin: 0;
+  }
+  #box {
+    width: 300px;
+    height: 300px;
+    margin: 100px auto;
+    background: blue;
+  }
 </style>
 
 <div id="box"></div>
 
 <script>
-	var move = require('..')
+  var move = require('..')
 
-	move(document.getElementById('box'))
-		.set('background', 'red')
-		.rotate(45)
-		.ease('out-sine')
-		.duration('.5s')
-		.then()
-			.set('background', 'blue')
-			.rotate(-45)
+  move(document.getElementById('box'))
+    .set('background', 'red')
+    .rotate(45)
+    .ease('out-sine')
+    .duration('.5s')
+    .then()
+      .set('background', 'blue')
+      .rotate(-45)
 </script>
