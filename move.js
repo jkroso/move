@@ -41,6 +41,38 @@ Emitter(Move.prototype)
 extensible(Move)
 
 /**
+ * set duration to `n` milliseconds. You can also
+ * pass a string if that allows you to express your
+ * duration more clearly
+ *
+ * @param {Number|String} n
+ * @return {this}
+ */
+
+Move.prototype.duration = function(n){
+  if (typeof n == 'string') n = ms(n)
+  this._duration = n
+  return this
+}
+
+/**
+ * Set easing function to `fn`.
+ *
+ *   tween.ease('in-out-sine')
+ *
+ * @param {String|Function} fn
+ * @return {this}
+ * @api public
+ */
+
+Move.prototype.ease = function(fn){
+  if (typeof fn == 'string') fn = ease[fn]
+  if (!fn) throw new Error('invalid easing function')
+  this._ease = fn
+  return this
+}
+
+/**
  * add `prop` to animation. When the animation is run
  * `prop` will be tweened from its current value to `to`
  *
@@ -202,32 +234,25 @@ Move.prototype.rotate = function(n){
 }
 
 /**
- * get the transformation matrix
+ * css transformation matrix for `this.el`
  *
- * @return {CSSMatrix}
+ * @return {Object}
  * @api private
  */
 
 lazy(Move.prototype, 'matrix', function(){
   var matrix = this.current(transform)
   if (typeof matrix == 'string') matrix = unmatrix(matrix)
-  return this._to[transform] = matrix
+  this._to[transform] = matrix
+  return matrix
 })
 
 /**
- * create a frame at point `p` through the animation
+ * generated tweening functions
  *
- * @param {Number} p
  * @return {Object}
  * @api private
  */
-
-Move.prototype.frame = function(p){
-  var tweens = this.tweens
-  var curr = this._curr
-  for (var k in tweens) curr[k] = tweens[k](p)
-  return curr
-}
 
 lazy(Move.prototype, 'tweens', function(){
   var tweens = {}
@@ -236,56 +261,6 @@ lazy(Move.prototype, 'tweens', function(){
   }
   return tweens
 })
-
-/**
- * set duration to `n` milliseconds. You can also
- * pass a string if that allows you to express your
- * duration more clearly
- *
- * @param {Number|String} n
- * @return {this}
- */
-
-Move.prototype.duration = function(n){
-  if (typeof n == 'string') n = ms(n)
-  this._duration = n
-  return this
-}
-
-/**
- * Set easing function to `fn`.
- *
- *   tween.ease('in-out-sine')
- *
- * @param {String|Function} fn
- * @return {this}
- * @api public
- */
-
-Move.prototype.ease = function(fn){
-  if (typeof fn == 'string') fn = ease[fn]
-  if (!fn) throw new Error('invalid easing function')
-  this._ease = fn
-  return this
-}
-
-/**
- * generate the next frame
- *
- * @return {Any}
- * @api public
- */
-
-Move.prototype.next = function(){
-  var progress = (now() - this.start) / this._duration
-
-  if (progress >= 1) {
-    this.done = true
-    progress = 1
-  }
-
-  return this.frame(this._ease(progress))
-}
 
 /**
  * render the animation at completion level `n`
@@ -313,23 +288,21 @@ Move.prototype.render = function(n){
 
 Move.prototype.run = function(n){
   if (n != null) this.duration(n)
+  var duration = this._duration
+  var start = this.start
   var self = this
   raf(function loop(){
-    self.apply(self.next())
-    if (self.done) self.emit('end')
-    else raf(loop)
+    var progress = (now() - start) / duration
+    if (progress >= 1) {
+      self.render(1)
+      self.running = false
+      self.emit('end')
+    } else {
+      self.render(progress)
+      raf(loop)
+    }
   })
   this.running = true
-  return this
-}
-
-Move.prototype.on('end', function(){
-  this.running = false
-})
-
-Move.prototype.apply = function(css){
-  var el = this.el.style
-  for (var k in css) el[k] = css[k]
   return this
 }
 
