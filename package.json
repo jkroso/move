@@ -3,7 +3,26 @@
   "version": "0.1.0",
   "description": "pure JavaScript DOM animation",
   "dependencies": {
-    "lazy-property": "*"
+    "extensible": "jkroso/extensible#0.2.0",
+    "unmatrix": "jkroso/unmatrix#0.1.0",
+    "emitter": "jkroso/emitter#0.10.0",
+    "prefix": "jkroso/prefix#0.2.0",
+    "ease": "component/ease#1.0.0",
+    "normalize-svg-path": "~0.1.0",
+    "serialize-svg-path": "~0.1.0",
+    "balance-svg-paths": "~0.1.0",
+    "clone": "jkroso/clone#0.3.0",
+    "raf": "component/raf#1.1.2",
+    "type": "jkroso/type#1.0.2",
+    "parse-svg-path": "~0.1.1",
+    "parse-duration": "~0.1.0",
+    "now": "jkroso/now#0.1.1",
+    "lazy-property": "~0.0.2",
+    "string-tween": "~0.1.0",
+    "color-parser": "~0.1.0",
+    "abs-svg-path": "~0.1.1",
+    "rel-svg-path": "~0.1.0",
+    "fcomp": "~1.1.0"
   },
   "devDependencies": {
     "serve": "jkroso/serve",
@@ -16,5 +35,5 @@
   "keywords": ["animation"],
   "author": "Jake Rosoman",
   "license": "MIT",
-  "files": ["index.js"]
+  "files": ["index.js", "move.js", "svg.js"]
 }
