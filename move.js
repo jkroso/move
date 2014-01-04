@@ -288,6 +288,22 @@ Move.prototype.next = function(){
 }
 
 /**
+ * render the animation at completion level `n`
+ *
+ * @param {Number} n
+ * @return {this}
+ * @api public
+ */
+
+Move.prototype.render = function(n){
+  n = this._ease(n)
+  var tweens = this.tweens
+  var style = this.el.style
+  for (var k in tweens) style[k] = tweens[k](n)
+  return this
+}
+
+/**
  * run the animation with an optional callback or duration
  *
  * @param {Number|String|Function} [n]
@@ -314,6 +330,7 @@ Move.prototype.on('end', function(){
 Move.prototype.apply = function(css){
   var el = this.el.style
   for (var k in css) el[k] = css[k]
+  return this
 }
 
 /**
