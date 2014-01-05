@@ -322,7 +322,7 @@ Move.prototype.then = function(move){
       ? function(){ move.run() }
       : move
     this.on('end', fn)
-    if (!this.running) this.run()
+    this.running || this.parent || this.run()
     return this
   }
   move = defer(this)
@@ -343,13 +343,10 @@ function defer(parent){
   child._duration = parent._duration
   child._ease = parent._ease
   child.parent = parent
-  child.running = true
   child.current = function(prop){
-    var parent = this.parent
-    while (parent) {
-      if (prop in parent._to) return clone(parent._to[prop])
-      parent = parent.parent
-    }
+    var anim = this.parent
+    do if (prop in anim._to) return clone(anim._to[prop])
+    while (anim = anim.parent)
     return this.constructor.prototype.current.call(this, prop)
   }
   return child
