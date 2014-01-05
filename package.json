@@ -11,6 +11,7 @@
     "balance-svg-paths": "~0.1.0",
     "clone": "jkroso/clone#0.3.0",
     "type": "jkroso/type#1.0.2",
+    "query": "component/query",
     "parse-svg-path": "~0.1.1",
     "lazy-property": "~0.0.2",
     "string-tween": "~0.1.0",
