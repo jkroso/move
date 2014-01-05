@@ -22,10 +22,14 @@ module.exports = Move.extend({
     return getComputedStyle(this.el)[prefix(k)]
       || this.el.getAttribute(k)
   },
-  apply: function(style){
-    for (var k in style) {
-      if (k in attrs) this.el.setAttribute(k, style[k])
-      else this.el.style[k] = style[k]
+  render: function(n){
+    n = this._ease(n)
+    var tweens = this.tweens
+    var style = this.el.style
+    for (var k in tweens) {
+      if (k in attrs) this.el.setAttribute(k, tweens[k](n))
+      else this.el.style[k] = tweens[k](n)
     }
+    return this
   }
 })
