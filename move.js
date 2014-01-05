@@ -28,7 +28,6 @@ var transform = prefix('transform')
  */
 
 function Move(el){
-  this._curr = {}
   this._to = {}
   this.el = el
 }
@@ -289,7 +288,7 @@ Move.prototype.render = function(n){
 Move.prototype.run = function(n){
   if (n != null) this.duration(n)
   var duration = this._duration
-  var start = this.start
+  var start = now()
   var self = this
   raf(function loop(){
     var progress = (now() - start) / duration
@@ -360,7 +359,5 @@ function defer(parent){
  * defaults
  */
 
-lazy(Move.prototype, 'start', now)
 Move.prototype.running = false
-Move.prototype.done = false
 Move.prototype.ease('linear')
