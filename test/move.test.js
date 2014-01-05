@@ -23,11 +23,11 @@ describe('move', function(){
     it('should handle default types', function(){
       mv.set('opacity', 0)
         .set('margin', 5)
-        .frame(.5)
-        .should.eql({
-          margin: '2.5px',
-          opacity: .5,
-        })
+        .render(.5)
+      box.style.should.include({
+        margin: '2.5px',
+        opacity: '0.5'
+      })
     })
   })
 
@@ -43,10 +43,10 @@ describe('move', function(){
     })
 
     it('should pull current value down from grandparents', function(){
+      var obj = mv.x(5).then().then().x(-2).render(.5)
       var frame = {}
-      frame[transform] = 'translateX(4px)translateY(0px)rotate(0deg)skew(0deg)scaleX(1)scaleY(1)'
-      var obj = mv.x(5).then().then().x(-2).frame(.5)
-      obj.should.eql(frame)
+      frame[transform] = 'translateX(4px) translateY(0px) rotate(0deg) skew(0deg) scaleX(1) scaleY(1)'
+      box.style.should.include(frame)
     })
 
     it('should not auto-run deferred moves', function(done){
