@@ -1,15 +1,10 @@
 
-var extensible = require('extensible')
+var Animation = require('animation')
 var lazy = require('lazy-property')
 var unmatrix = require('unmatrix')
-var ms = require('parse-duration')
-var Emitter = require('emitter')
 var tween = require('./tween')
 var prefix = require('prefix')
 var clone = require('clone')
-var ease = require('ease')
-var now = require('now')
-var raf = require('raf')
 
 module.exports = Move
 
@@ -33,43 +28,10 @@ function Move(el){
 }
 
 /**
- * mixin methods
+ * inherit from Animation
  */
 
-Emitter(Move.prototype)
-extensible(Move)
-
-/**
- * set duration to `n` milliseconds. You can also
- * pass a string if that allows you to express your
- * duration more clearly
- *
- * @param {Number|String} n
- * @return {this}
- */
-
-Move.prototype.duration = function(n){
-  if (typeof n == 'string') n = ms(n)
-  this._duration = n
-  return this
-}
-
-/**
- * Set easing function to `fn`.
- *
- *   tween.ease('in-out-sine')
- *
- * @param {String|Function} fn
- * @return {this}
- * @api public
- */
-
-Move.prototype.ease = function(fn){
-  if (typeof fn == 'string') fn = ease[fn]
-  if (!fn) throw new Error('invalid easing function')
-  this._ease = fn
-  return this
-}
+Animation.extend(Move)
 
 /**
  * add `prop` to animation. When the animation is run
@@ -278,34 +240,6 @@ Move.prototype.render = function(n){
 }
 
 /**
- * run the animation with an optional callback or duration
- *
- * @param {Number|String|Function} [n]
- * @return {this}
- * @api public
- */
-
-Move.prototype.run = function(n){
-  if (n != null) this.duration(n)
-  var duration = this._duration
-  var start = now()
-  var self = this
-  raf(function loop(){
-    var progress = (now() - start) / duration
-    if (progress >= 1) {
-      self.render(1)
-      self.running = false
-      self.emit('end')
-    } else {
-      self.render(progress)
-      raf(loop)
-    }
-  })
-  this.running = true
-  return this
-}
-
-/**
  * Create a new Move instance which will run
  * when `this` move completes. Optionally you can
  * pass in a Move instance or Function to be run
@@ -351,10 +285,3 @@ function defer(parent){
   }
   return child
 }
-
-/**
- * defaults
- */
-
-Move.prototype.running = false
-Move.prototype.ease('linear')
