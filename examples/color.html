@@ -9,7 +9,7 @@
     width: 300px;
     height: 300px;
     margin: 100px auto;
-    background: blue;
+    background-color: blue;
   }
 </style>
 
@@ -19,11 +19,11 @@
   var move = require('..')
 
   move('#box')
-    .set('background', 'red')
+    .set('background-color', 'red')
     .rotate(45)
     .ease('out-sine')
     .duration('.5s')
     .then()
-      .set('background', 'blue')
+      .set('background-color', 'blue')
       .rotate(-45)
 </script>
