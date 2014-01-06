@@ -1,14 +1,17 @@
 
 var parse = require('color-parser')
+var round = Math.round
 
 module.exports = function(from, to){
   from = rgba(from)
   to = rgba(to)
   var curr = to.slice()
   return function frame(n){
-    for (var i = 0; i < 4; i++) {
-      curr[i] = (from[i] + (to[i] - from[i]) * n).toFixed(0)
+    for (var i = 0; i < 3; i++) {
+      curr[i] = round(from[i] + (to[i] - from[i]) * n)
     }
+    // don't round alpha
+    curr[3] = from[i] + (to[i] - from[i]) * n
     return 'rgba(' + curr + ')'
   }
 }

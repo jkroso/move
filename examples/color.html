@@ -2,28 +2,32 @@
 <title>color</title>
 
 <style>
-  body {
-    margin: 0;
-  }
-  #box {
+  body { margin: 0; padding: 60px; }
+  div {
     width: 300px;
     height: 300px;
-    margin: 100px auto;
-    background-color: blue;
+    margin: 0 15px;
+    display: inline-block;
   }
+  #box1 { background-color: blue; }
+  #box2 { background-color: black; }
 </style>
 
-<div id="box"></div>
+<div id="box1"></div>
+<div id="box2"></div>
 
 <script>
   var move = require('..')
 
-  move('#box')
+  move('#box1')
     .set('background-color', 'red')
-    .rotate(45)
     .ease('out-sine')
     .duration('.5s')
-    .then()
-      .set('background-color', 'blue')
-      .rotate(-45)
+    .then().set('background-color', 'blue')
+
+  move('#box2')
+    .set('background-color', 'rgba(0,0,0,0.3)')
+    .ease('out-sine')
+    .duration('.5s')
+    .then().set('background-color', 'black')
 </script>
