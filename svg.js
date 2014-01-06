@@ -30,6 +30,8 @@ module.exports = Move.extend({
       if (k in attrs) this.el.setAttribute(k, tweens[k](n))
       else this.el.style[k] = tweens[k](n)
     }
+    // HACK: force redraw because chrome has some buggy optimisations
+    this.el.offsetHeight 
     return this
   }
 })
