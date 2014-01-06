@@ -7,7 +7,7 @@
 
 ## Installation
 
-With your favourite package manager:
+With your favorite package manager:
 
 - [packin](//github.com/jkroso/packin): `packin add jkroso/move`
 - [component](//github.com/component/component#installing-packages): `component install jkroso/move`
