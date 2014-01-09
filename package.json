@@ -5,7 +5,6 @@
   "dependencies": {
     "animation": "jkroso/animation#0.1.0",
     "unmatrix": "jkroso/unmatrix#0.1.0",
-    "prefix": "jkroso/prefix#0.2.1",
     "normalize-svg-path": "~0.1.0",
     "serialize-svg-path": "~0.1.0",
     "balance-svg-paths": "~0.1.0",
@@ -18,6 +17,7 @@
     "color-parser": "~0.1.0",
     "abs-svg-path": "~0.1.1",
     "rel-svg-path": "~0.1.0",
+    "prefix": "~0.2.1",
     "fcomp": "~1.1.0"
   },
   "devDependencies": {
