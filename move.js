@@ -152,6 +152,7 @@ Move.prototype.y = function(n){
  */
 
 Move.prototype.scale = function(x, y){
+  if (y == null) y = x
   this.matrix.scaleX *= x
   this.matrix.scaleY *= y
   return this
