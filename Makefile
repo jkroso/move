@@ -1,6 +1,6 @@
 
 serve: node_modules
-	@node_modules/serve/bin/serve -Slop 0
+	@node_modules/serve/bin/serve -Slop 3000
 
 node_modules: *.json
 	@packin install \

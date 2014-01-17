@@ -3,6 +3,16 @@
   font: 14px/1.5 "helvetica neue", helvetica, arial, sans-serif;
   color: #8b8b8b;
 }
+svg {
+  width:100%;
+  height:100%;
+}
+svg path {
+  stroke-linecap: round;
+  stroke-width: 4;
+  stroke: #8b8b8b;
+  fill: none;
+}
 h1, h2, h3 {
   font-size: 33px;
   font-weight: normal;
@@ -10,27 +20,34 @@ h1, h2, h3 {
   -webkit-font-smoothing: antialiased;
 }
 h2 {
-  display: none;
-  font-size: 33px;
+  font-size: 20px;
 }
 h3 {
   padding: 5px 0;
   font-size: 18px;
-  border-bottom: 3px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 a {
   text-decoration: none;
   color: rgb(106,142,225);
 }
+button:last-child {
+  font-size: 20px;
+  margin-top: 3px;
+}
+button:focus {
+  outline: none;
+}
 button {
-  vertical-align: middle;
-  border-radius: 50%;
+  vertical-align: top;
   border: 0;
+  font-size: 16px;
   width: 21px;
   height: 21px;
-  background: #eee;
-  color: white;
+  color: rgb(60,60,60);
+  background: white;
   margin-left: 10px;
+  margin-top: 5px;
   font-weight: bold;
 }
 button:hover {
@@ -69,73 +86,100 @@ button:hover {
   padding: 2px 5px;
   border: 1px solid #eee;
   -webkit-border-radius: 3px;
-}</style></head><body><h1>Move</h1><p>Move makes writing DOM animations as easy as with CSS3 but since its all JavaScript, offers you more power and composition.</p><h2>Examples</h2><div id="examples"><div class="example"><h3>Move#set(prop, val) <button class="play">▶</button></h3><p>Set <em>prop</em> to <em>val</em>.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
+}</style></head><body><h1>Move</h1><p>Move makes animating the properties of DOM/SVG elements easy with a clean expressive API. Combine it with <a href="//github.com/jkroso/timeline">something</a> to manage the timing between animations and you can really make your page dance.</p><h2>Limitations</h2><ul><li>Coordinating animations</li><p>If you animated the same property of the same element with 2 different instances of Move then only one only the second one will be visible. This may seem obvious and not a problem but if your triggering animations from async events then you will need to keep track off old instances so you can stop them before starting the next ones. If your using CSS transitions you don't need to worry about it. <href="//github.com/visionmedia/move.js">move.js</a> is a good animation lib based on CSS transitions.</p></ul><h2>Advantages</h2><ul><li>Full control over progress</li><p>Animations don't have to be time based. Sometimes its nice base an animation on page scrolling or the progress of an HTTP request.</p></ul><h2>Examples</h2><div id="examples"><div class="example"><h3>Move#set(prop, val) <button class="play">▶</button></h3><p>Set <em>prop</em> to <em>val</em>.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .set('margin-left', 200)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#add(prop, val) <button class="play">▶</button></h3><p>Increment <em>prop</em> by <em>val</em>, where <em>val</em> is an Number (click several times).</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .add('margin-left', 200)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#sub(prop, val) <button class="play">▶</button></h3><p>Decrement <em>prop</em> by <em>val</em>, where <em>val</em> is an Number (click several times).</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .sub('margin-left', 100)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#rotate(deg) <button class="play">▶</button></h3><p>Rotate by <em>deg</em>.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .rotate(140)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#duration(n) <button class="play">▶</button></h3><p>Set animation duration to <em>n</em> which is a Number or a string such as "4s".</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .set('background-color', 'blue')
   .duration('2s')
-  .end()
+  .run()
   </code></pre></div><div class="example"><h3>Move#translate(x[, y]) <button class="play">▶</button></h3><p>Translate <em>x</em> and optionally <em>y</em> axis.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .translate(100, 20)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#x(n) / Move#y(n) <button class="play">▶</button></h3><p>Translate <em>x</em> or <em>y</em> axis. Aliased by <code>Move#translateX(n)</code> and <code>Move#translateY(n)</code>.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .x(100)
   .y(20)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#skew(x[, y]) <button class="play">▶</button></h3><p>Skew <em>x</em>, and optionally <em>y</em>. <code>Move#skewX(n)</code> and <code>Move#skewY(n)</code> are also available.</p></p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .skew(50)
-  .end()
+  .run('1s')
   </code></pre></div><div class="example"><h3>Move#scale(x[, y]) <button class="play">▶</button></h3><p>Scale the <em>x</em>, and optionally <em>y</em> axis. <code>Move#scaleX(n)</code> and <code>Move#scaleY(n)</code> are also available.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .scale(3)
-  .end()
-  </code></pre></div><div class="example"><h3>Move#end([fn]) <button class="play">▶</button></h3><p>The <code>end()</code> method triggers the animation to play. Optionally you can pass it a callback <em>fn</em> to call when complete or a duration.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
+  .run('1s')
+  </code></pre></div><div class="example"><h3>Move#then(fn) <button class="play">▶</button></h3><p>The <code>then()</code> method triggers the animation to run. Optionally you can pass in a callback <code>fn</code> to call when the animation completes.</p><div class="sandbox"><div class="box small"></div></div><pre class="source"><code>move(box)
   .set('background-color', 'blue')
   .duration('1s')
-  .end(function(){
+  .then(function(){
     move(box)
       .set('background-color', 'aliceblue')
-      .end('1s')
+      .run('1s')
   })
-  </code></pre></div><div class="example"><h3>Move#then([fn]) <button class="play">▶</button></h3><p> Creates a <code>DeferredMove</code> which will be run when this move completes. Optionally you can pass in a Move instance and it will be run on completion of this animation just as a <code>DeferredMove</code> would. <code>then()</code> returns the <code>DeferredMove</code> instance so you can configure it while <code>then(move(el))</code> returns this for chaining. <code>DeferredMove</code>'s have a special method <code>pop()</code> which returns its parent move incase you want to continue configuring it in a chain.</p><div class="sandbox"><div class="box small"></div><div class="box small"></div></div><pre class="source"><code>var moveBack = move(boxs[0])
+  </code></pre></div><div class="example"><h3>Move#then([move]) <button class="play">▶</button></h3><p> Creates a <code>DeferredMove</code> which will be run when this move completes. Optionally you can pass in a Move instance and it will be run on completion of this animation.</p><div class="sandbox"><div class="box small"></div><div class="box small"></div></div><pre class="source"><code>var moveBack = move(boxs[0])
+  .duration(500)
   .set('background-color', 'aliceblue')
   .x(0)
   
 move(boxs[0])
+  .duration('1s')
   .set('background-color', 'blue')
   .x(500)
   .then(moveBack)
   
 move(boxs[1])
+  .duration(500)
   .set('background-color', 'blue')
   .x(500)
   .scale(.5)
   .rotate(60)
+  .then()
+    .rotate(30)
+    .scale(2)
+    .set('border-radius', 5)
+    .set('opacity', 0)
     .then()
-      .rotate(30)
-      .scale(2)
-      .set('border-radius', 5)
-      .set('opacity', 0)
-      .then()
-        .rotate(270)
-        .x(-500)
-        .set('background-color', 'aliceblue')
-        .set('border-radius', 0)
-        .set('opacity', 1)
-        </code></pre></div><div class="example"><h3>Move#ease(fn) <button class="play">▶</button></h3><p>Use the given easing <code>fn</code>. The default function is "linear". For a complete list of available functions <a href="http://github.com/component/ease">see</a></p><div class="sandbox"><div class="box small wide">linear</div><div class="box small wide">in-quad</div><div class="box small wide">out-quad</div><div class="box small wide">in-out-quad</div></div><pre class="source"><code>boxs.forEach(function(box){
+      .rotate(270)
+      .x(-500)
+      .set('background-color', 'aliceblue')
+      .set('border-radius', 0)
+      .set('opacity', 1)
+      </code></pre></div><div class="example"><h3>Move#ease(fn) <button class="play">▶</button></h3><p>Use the given easing <code>fn</code>. The default function is "linear". For a complete list of available functions see <a href="http://github.com/component/ease">component/ease</a></p><div class="sandbox"><div class="box small wide">linear</div><div class="box small wide">in-quad</div><div class="box small wide">out-quad</div><div class="box small wide">in-out-quad</div></div><pre class="source"><code>boxs.forEach(function(box){
   move(box)
+    .duration('1s')
     .ease(box.textContent)
     .x(400)
     .then()
       .x(-400)
 })
-</code></pre></div></div><script src="built.js"></script></body>
+</code></pre></div><div class="example"><h3>Move(svg) <button class="play">▶</button></h3><p>Move handles SVG elements transparently. Just go ahead and use all the same methods.</p><svg xmlns="http://www.w3.org/2000/svg" link="http://www.w3.org/1999/xlink" style="height:300px;" version="1.1" class="sandbox"><path id="circle" d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"></path></svg><pre class="source"><code>move('#circle')
+  .set('d', '\
+    m 200 50 \
+    l 100 100 \
+    l -100 100 \
+    l -100 -100 \
+    l 100 -100')
+  .ease('out-sine')
+  .duration('.5s')
+  .then()
+    .set('d', '\
+      m 300,150 \
+      c 0,50 -50,50 -50,0 \
+      s -50,-50 -50,0 \
+      s -50,50 -50,0 \
+      s -50,-50 -50,0')
+    .then()
+      .set('d', '\
+        m 200 100 \
+        l 50 47 \
+        a 6 6 0 0 1 0 6 \
+        l -50 47 \
+        l 0 -100')
+        </code></pre></div></div><script src="built.js"></script></body>
