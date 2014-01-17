@@ -1,4 +1,4 @@
-doctype 5
+doctype html
 head
   meta(charset="utf-8")
   title Move Documentation
@@ -8,6 +8,16 @@ head
       font: 14px/1.5 "helvetica neue", helvetica, arial, sans-serif;
       color: #8b8b8b;
     }
+    svg {
+      width:100%;
+      height:100%;
+    }
+    svg path {
+      stroke-linecap: round;
+      stroke-width: 4;
+      stroke: #8b8b8b;
+      fill: none;
+    }
     h1, h2, h3 {
       font-size: 33px;
       font-weight: normal;
@@ -15,27 +25,34 @@ head
       -webkit-font-smoothing: antialiased;
     }
     h2 {
-      display: none;
-      font-size: 33px;
+      font-size: 20px;
     }
     h3 {
       padding: 5px 0;
       font-size: 18px;
-      border-bottom: 3px solid #eee;
+      border-bottom: 1px solid #eee;
     }
     a {
       text-decoration: none;
       color: rgb(106,142,225);
     }
+    button:last-child {
+      font-size: 20px;
+      margin-top: 3px;
+    }
+    button:focus {
+      outline: none;
+    }
     button {
-      vertical-align: middle;
-      border-radius: 50%;
+      vertical-align: top;
       border: 0;
+      font-size: 16px;
       width: 21px;
       height: 21px;
-      background: #eee;
-      color: white;
+      color: rgb(60,60,60);
+      background: white;
       margin-left: 10px;
+      margin-top: 5px;
       font-weight: bold;
     }
     button:hover {
@@ -77,9 +94,19 @@ head
     }
 body
   h1 Move
-  p Move makes writing DOM animations as easy as with CSS3 but since its all JavaScript, offers you more power and composition.
+  p Move makes animating the properties of DOM/SVG elements easy and provides a nice clean expressive API to do it. Combine it with <a href="//github.com/jkroso/timeline">something</a> to manage the timing between animations and you can really make your page dance.
 
-  <h2>Examples</h2>
+  h2 Limitations
+  ul
+    li Coordinating animations
+    p If you animated the same property of the same element with 2 different instances of Move then only one only the second one will be visible. This may seem obvious and not a problem but if your triggering animations from async events then you will need to keep track off old instances so you can stop them before starting the next ones. If your using CSS transitions you don't need to worry about it. <href="//github.com/visionmedia/move.js">move.js</a> is a good animation lib based on CSS transitions.
+
+  h2 Advantages
+  ul
+    li Full control over progress
+    p Animations don't have to be time based. Sometimes its nice base an animation on page scrolling or the progress of an HTTP request.
+
+  h2 Examples
   #examples
     div.example
       h3 Move#set(prop, val) <button class="play">▶</button>
@@ -89,7 +116,7 @@ body
       pre.source: code.
         move(box)
           .set('margin-left', 200)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#add(prop, val) <button class="play">▶</button>
@@ -99,7 +126,7 @@ body
       pre.source: code.
         move(box)
           .add('margin-left', 200)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#sub(prop, val) <button class="play">▶</button>
@@ -109,7 +136,7 @@ body
       pre.source: code.
         move(box)
           .sub('margin-left', 100)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#rotate(deg) <button class="play">▶</button>
@@ -119,7 +146,7 @@ body
       pre.source: code.
         move(box)
           .rotate(140)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#duration(n) <button class="play">▶</button>
@@ -130,7 +157,7 @@ body
         move(box)
           .set('background-color', 'blue')
           .duration('2s')
-          .end()
+          .run()
 
     div.example
       h3 Move#translate(x[, y]) <button class="play">▶</button>
@@ -140,7 +167,7 @@ body
       pre.source: code.
         move(box)
           .translate(100, 20)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#x(n) / Move#y(n) <button class="play">▶</button>
@@ -151,7 +178,7 @@ body
         move(box)
           .x(100)
           .y(20)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#skew(x[, y]) <button class="play">▶</button>
@@ -161,7 +188,7 @@ body
       pre.source: code.
         move(box)
           .skew(50)
-          .end()
+          .run('1s')
 
     div.example
       h3 Move#scale(x[, y]) <button class="play">▶</button>
@@ -171,59 +198,62 @@ body
       pre.source: code.
         move(box)
           .scale(3)
-          .end()
+          .run('1s')
 
     div.example
-      h3 Move#end([fn]) <button class="play">▶</button>
-      p The <code>end()</code> method triggers the animation to play. Optionally you can pass it a callback <em>fn</em> to call when complete or a duration.
+      h3 Move#then(fn) <button class="play">▶</button>
+      p The <code>then()</code> method triggers the animation to run. Optionally you can pass in a callback <code>fn</code> to call when the animation completes.
       div.sandbox
         div.box.small
       pre.source: code.
         move(box)
           .set('background-color', 'blue')
           .duration('1s')
-          .end(function(){
+          .then(function(){
             move(box)
               .set('background-color', 'aliceblue')
-              .end('1s')
+              .run('1s')
           })
 
     div.example
-      h3 Move#then([fn]) <button class="play">▶</button>
-      p  Creates a <code>DeferredMove</code> which will be run when this move completes. Optionally you can pass in a Move instance and it will be run on completion of this animation just as a <code>DeferredMove</code> would. <code>then()</code> returns the <code>DeferredMove</code> instance so you can configure it while <code>then(move(el))</code> returns this for chaining. <code>DeferredMove</code>'s have a special method <code>pop()</code> which returns its parent move incase you want to continue configuring it in a chain.
+      h3 Move#then([move]) <button class="play">▶</button>
+      p  Creates a <code>DeferredMove</code> which will be run when this move completes. Optionally you can pass in a Move instance and it will be run on completion of this animation.
       div.sandbox
         div.box.small
         div.box.small
       pre.source: code.
         var moveBack = move(boxs[0])
+          .duration(500)
           .set('background-color', 'aliceblue')
           .x(0)
 
         move(boxs[0])
+          .duration('1s')
           .set('background-color', 'blue')
           .x(500)
           .then(moveBack)
 
         move(boxs[1])
+          .duration(500)
           .set('background-color', 'blue')
           .x(500)
           .scale(.5)
           .rotate(60)
+          .then()
+            .rotate(30)
+            .scale(2)
+            .set('border-radius', 5)
+            .set('opacity', 0)
             .then()
-              .rotate(30)
-              .scale(2)
-              .set('border-radius', 5)
-              .set('opacity', 0)
-              .then()
-                .rotate(270)
-                .x(-500)
-                .set('background-color', 'aliceblue')
-                .set('border-radius', 0)
-                .set('opacity', 1)
+              .rotate(270)
+              .x(-500)
+              .set('background-color', 'aliceblue')
+              .set('border-radius', 0)
+              .set('opacity', 1)
 
     div.example
       h3 Move#ease(fn) <button class="play">▶</button>
-      p Use the given easing <code>fn</code>. The default function is "linear". For a complete list of available functions <a href="http://github.com/component/ease">see</a>
+      p Use the given easing <code>fn</code>. The default function is "linear". For a complete list of available functions see <a href="http://github.com/component/ease">component/ease</a>
       div.sandbox
         div.box.small.wide linear
         div.box.small.wide in-quad
@@ -232,10 +262,45 @@ body
       pre.source: code.
         boxs.forEach(function(box){
           move(box)
+            .duration(500)
             .ease(box.textContent)
             .x(400)
             .then()
               .x(-400)
         })
+
+    div.example
+      h3 Move(svg) <button class="play">▶</button>
+      p Move handles SVG elements transparently. Just go ahead and use all the same methods.
+      svg.sandbox(
+        xmlns="http://www.w3.org/2000/svg"
+        link="http://www.w3.org/1999/xlink"
+        style="height:300px;"
+        version="1.1")
+        path#circle(d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100")
+      pre.source: code.
+        move('#circle')
+          .set('d', '\
+            m 200 50 \
+            l 100 100 \
+            l -100 100 \
+            l -100 -100 \
+            l 100 -100')
+          .ease('out-sine')
+          .duration('.5s')
+          .then()
+            .set('d', '\
+              m 300,150 \
+              c 0,50 -50,50 -50,0 \
+              s -50,-50 -50,0 \
+              s -50,50 -50,0 \
+              s -50,-50 -50,0')
+            .then()
+              .set('d', '\
+                m 200 100 \
+                l 50 47 \
+                a 6 6 0 0 1 0 6 \
+                l -50 47 \
+                l 0 -100')
 
   script(src="examples.js")
