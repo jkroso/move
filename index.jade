@@ -2,97 +2,7 @@ doctype html
 head
   meta(charset="utf-8")
   title Move Documentation
-  style.
-    body {
-      padding: 50px;
-      font: 14px/1.5 "helvetica neue", helvetica, arial, sans-serif;
-      color: #8b8b8b;
-      max-width: 800px;
-    }
-    svg {
-      width:100%;
-      height:100%;
-    }
-    svg path {
-      stroke-linecap: round;
-      stroke-width: 4;
-      stroke: #8b8b8b;
-      fill: none;
-    }
-    h1, h2, h3 {
-      font-size: 33px;
-      font-weight: normal;
-      color: #333;
-      -webkit-font-smoothing: antialiased;
-    }
-    h2 {
-      font-size: 20px;
-    }
-    h3 {
-      padding: 5px 0;
-      font-size: 18px;
-      border-bottom: 1px solid #eee;
-    }
-    a {
-      text-decoration: none;
-      color: rgb(106,142,225);
-    }
-    button:last-child {
-      font-size: 20px;
-      margin-top: 3px;
-    }
-    button:focus {
-      outline: none;
-    }
-    button {
-      vertical-align: top;
-      border: 0;
-      font-size: 16px;
-      width: 21px;
-      height: 21px;
-      color: rgb(60,60,60);
-      background: white;
-      margin-left: 10px;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-    button:hover {
-      cursor: pointer;
-    }
-    .sandbox {
-      margin: 10px 0;
-      padding: 5px;
-      border: 1px solid #eee;
-    }
-    .sandbox .box {
-      background: aliceblue;
-      margin: 5px;
-      border: 1px solid #888;
-      font-size: 11px;
-      text-align: center;
-      line-height: 50px;
-    }
-    .sandbox .box.small {
-      width: 50px;
-      height: 50px;
-    }
-    .sandbox .box.wide {
-      width: 100px;
-    }
-    .source {
-      font-family: monaco, monospace;
-      font-size: 12px;
-      color: #999;
-    }
-    .example p {
-      color: #333;
-    }
-    .example p code {
-      color: #999;
-      padding: 2px 5px;
-      border: 1px solid #eee;
-      -webkit-border-radius: 3px;
-    }
+  link(rel="stylesheet", href="index.css")
 body
   h1 Move
   p Move makes animating the properties of DOM/SVG elements easy with a clean expressive API. Combine it with <a href="//github.com/jkroso/timeline">something</a> to manage the timing between animations and you can really make your page dance.
@@ -268,6 +178,26 @@ body
             .x(400)
             .then()
               .x(-400)
+        })
+
+    div.example
+      h3 Move#render(n) <input type="range" value="0"/>
+      p render allows you to control the animation
+      svg.sandbox(
+        xmlns="http://www.w3.org/2000/svg"
+        link="http://www.w3.org/1999/xlink"
+        style="height:300px;"
+        version="1.1")
+        path#circle(d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100")
+      pre.source: code.
+        var anim = move('#circle').set('d', '\
+          m 300,150 \
+          c 0,50 -50,50 -50,0 \
+          s -50,-50 -50,0 \
+          s -50,50 -50,0 \
+          s -50,-50 -50,0')
+        example.find('input').on('change', function(e){
+          anim.render(this.value/100)
         })
 
     div.example

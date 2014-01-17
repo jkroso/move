@@ -1,22 +1,23 @@
 
-var style = require('computed-style')
 var move = require('move')
 var dom = require('dom')
-var css = require('css')
 
-dom('.example').each(function(el){
-  el.initial = el.find('.sandbox').html()
+dom('.example').each(function(example){
+  example.initial = example.find('.sandbox').html()
+  var play = example.find('button.play')
 
-  el.find('button.play').on('mousedown', function(){
-    var boxs = el.find('.box.small')
-    var boxs = [].slice.call(boxs.els)
-    var box = boxs[0]
-    eval(el.find('.source').text())
+  if (!play.length) return run()
+
+  play.on('mousedown', run)
+
+  example.find('h3').append('<button class="reset">↻</button>')
+  example.find('button.reset').on('mousedown', function(e){
+    example.find('.sandbox').html(example.initial)
   })
 
-  el.find('h3')
-    .append('<button class="reset">↻</button>')
-    .on('mousedown', function(e){
-      el.find('.sandbox').html(el.initial)
-    })
+  function run(){
+    var boxs = example.find('.box.small').toArray()
+    var box = boxs[0]
+    eval(example.find('.source').text())
+  }
 })
