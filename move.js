@@ -34,6 +34,12 @@ function Move(el){
 Animation.extend(Move)
 
 /**
+ * default duration
+ */
+
+Move.prototype.duration('300ms')
+
+/**
  * add `prop` to animation. When the animation is run
  * `prop` will be tweened from its current value to `to`
  *
