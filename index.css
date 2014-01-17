@@ -88,3 +88,8 @@ button:hover {
   border: 1px solid #eee;
   -webkit-border-radius: 3px;
 }
+.example code .comment { color: #ddd; }
+.example code .init { color: #2f6fad; }
+.example code .string { color: #5890ad; }
+.example code .keyword { color: #8a6343; }
+.example code .number { color: #2f6fad; }

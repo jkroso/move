@@ -5,6 +5,7 @@ var dom = require('dom')
 dom('.example').each(function(example){
   example.initial = example.find('.sandbox').html()
   var play = example.find('button.play')
+  example.find('.source code').html(highlight(example.find('.source').text()))
 
   if (!play.length) return run()
 
@@ -21,3 +22,23 @@ dom('.example').each(function(example){
     eval(example.find('.source').text())
   }
 })
+
+/**
+ * Highlight the given string of `js`.
+ *
+ * @param {String} js
+ * @return {String}
+ * @api private
+ */
+
+function highlight(js) {
+  return js
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\/\/(.*)/gm, '<span class="comment">//$1</span>')
+    .replace(/('.*?')/gm, '<span class="string">$1</span>')
+    .replace(/(\d+\.\d+)/gm, '<span class="number">$1</span>')
+    .replace(/(\d+)/gm, '<span class="number">$1</span>')
+    .replace(/\bnew *(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
+    .replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
+}
