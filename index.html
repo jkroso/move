@@ -71,7 +71,7 @@ move(boxs[1])
     .then()
       .x(-400)
 })
-</code></pre></div><div class="example"><h3>Move#render(n) <input type="range" value="0"/></h3><p>render allows you to control the animation</p><svg xmlns="http://www.w3.org/2000/svg" link="http://www.w3.org/1999/xlink" style="height:300px;" version="1.1" class="sandbox"><path id="circle" d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"></path></svg><pre class="source"><code>var anim = move('#circle').set('d', '\
+</code></pre></div><div class="example"><h3>Move#render(n) <input type="range" value="0"/></h3><p>render allows you to control the animation</p><svg xmlns="http://www.w3.org/2000/svg" link="http://www.w3.org/1999/xlink" style="height:300px;" version="1.1" class="sandbox"><path id="circle" d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"></path></svg><pre class="source"><code>var anim = move(box).set('d', '\
   m 300,150 \
   c 0,50 -50,50 -50,0 \
   s -50,-50 -50,0 \
@@ -80,7 +80,7 @@ move(boxs[1])
 example.find('input').on('change', function(e){
   anim.render(this.value/100)
 })
-</code></pre></div><div class="example"><h3>Move(svg) <button class="play">▶</button></h3><p>Move handles SVG elements transparently. Just go ahead and use all the same methods.</p><svg xmlns="http://www.w3.org/2000/svg" link="http://www.w3.org/1999/xlink" style="height:300px;" version="1.1" class="sandbox"><path id="circle" d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"></path></svg><pre class="source"><code>move('#circle')
+</code></pre></div><div class="example"><h3>Move(svg) <button class="play">▶</button></h3><p>Move handles SVG elements transparently. Just go ahead and use all the same methods.</p><svg xmlns="http://www.w3.org/2000/svg" link="http://www.w3.org/1999/xlink" style="height:300px;" version="1.1" class="sandbox"><path id="circle" d="m 200 50 a 100 100 0 0 1 100 100 a 100 100 0 0 1 -100 100 a 100 100 0 0 1 -100 -100 a 100 100 0 0 1 100 -100"></path></svg><pre class="source"><code>move(box)
   .set('d', '\
     m 200 50 \
     l 100 100 \

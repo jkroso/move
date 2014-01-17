@@ -18,7 +18,8 @@ dom('.example').each(function(example){
 
   function run(){
     var boxs = example.find('.box.small').toArray()
-    var box = boxs[0]
+    var sandbox = example.find('.sandbox')[0]
+    var box = boxs[0] || sandbox.firstChild
     eval(example.find('.source').text())
   }
 })
