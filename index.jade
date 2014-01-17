@@ -94,7 +94,7 @@ head
     }
 body
   h1 Move
-  p Move makes animating the properties of DOM/SVG elements easy and provides a nice clean expressive API to do it. Combine it with <a href="//github.com/jkroso/timeline">something</a> to manage the timing between animations and you can really make your page dance.
+  p Move makes animating the properties of DOM/SVG elements easy with a clean expressive API. Combine it with <a href="//github.com/jkroso/timeline">something</a> to manage the timing between animations and you can really make your page dance.
 
   h2 Limitations
   ul
@@ -262,7 +262,7 @@ body
       pre.source: code.
         boxs.forEach(function(box){
           move(box)
-            .duration(500)
+            .duration('1s')
             .ease(box.textContent)
             .x(400)
             .then()
