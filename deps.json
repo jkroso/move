@@ -3,7 +3,7 @@
     "computed-style": "http://github.com/jkroso/computed-style/tarball/0.1.0",
     "move": "http://github.com/jkroso/move/tarball/df04901",
     "dom": "http://github.com/component/dom/tarball/2e041f9",
-    "serve": "http://github.com/jkroso/serve/tarball/1.5.1",
+    "serve": "http://github.com/jkroso/serve/tarball/1.5.3",
     "css": "http://github.com/component/css/tarball/0.0.3"
   }
 }
