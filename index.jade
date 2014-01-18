@@ -15,13 +15,15 @@ body
 
   h2 Limitations
   ul
-    li Coordinating animations
-    p If you animated the same property of the same element with 2 different instances of Move then only one second one will be visible. This may seem obvious and not a problem but if your triggering animations from async events then you will need to keep track of old instances so you can stop them before starting the next ones. If your using CSS transitions you don't need to worry about this. <a href="//github.com/visionmedia/move.js">move.js</a> is a good animation lib based on CSS transitions.
+    li Overlapping animations
+    p If you animated the same property of the same element with 2 different instances of Move then only the second one will be visible. This may seem obvious and not a problem but if your triggering animations from async events then you will need to keep track of old instances so you can stop them before starting the next ones. If your using CSS transitions you don't need to worry about this. <a href="//github.com/visionmedia/move.js">move.js</a> is a good animation lib based on CSS transitions.
+    li Performance
+    p CSS animations <i>should</i> always be faster since the browser knows your intention and can make low level optimizations. In practice though I've found tuning the timing between animations, such reducing the overlap of opacity with other properties, is more important than outright speed. But this is subject to change as browsers improve.
 
   h2 Advantages
   ul
     li Full control over progress
-    p Animations don't have to be time based. Sometimes its nice base an animation on page scrolling or the progress of an HTTP request.
+    p Animations don't have to be time based. Sometimes its nice base an animation on page scrolling or the progress of an HTTP request. This is also the feature which enables higher level <a href="//github.com/jkroso/timeline">orchestration tools</a>.
 
   h2 Examples
   #examples
