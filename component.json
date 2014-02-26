@@ -33,7 +33,7 @@
     "tween/matrix.js",
     "tween/number.js",
     "tween/path.js",
-    "tween/px.js",
+    "tween/px.js"
   ],
   "license": "MIT"
 }
