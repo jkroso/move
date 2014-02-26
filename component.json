@@ -1,8 +1,11 @@
 {
   "name": "move",
+  "version": "0.1.1",
   "repo": "jkroso/move",
   "description": "pure JavaScript DOM animation",
-  "keywords": ["animation"],
+  "keywords": [
+    "animation"
+  ],
   "dependencies": {
     "matthewmueller/lazy-property": "0.0.2",
     "jkroso/normalize-svg-path": "0.1.0",
@@ -21,6 +24,8 @@
     "component/query": "*",
     "jkroso/type": "1.1.0"
   },
-  "scripts": ["index.js"],
+  "scripts": [
+    "index.js"
+  ],
   "license": "MIT"
 }

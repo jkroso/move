@@ -1,6 +1,6 @@
 {
   "name": "move",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "pure JavaScript DOM animation",
   "dependencies": {
     "animation": "jkroso/animation#0.1.0",
@@ -28,8 +28,14 @@
   },
   "repository": "git://github.com/jkroso/move.git",
   "bugs": "https://github.com/jkroso/move/issues",
-  "keywords": ["animation"],
+  "keywords": [
+    "animation"
+  ],
   "author": "Jake Rosoman",
   "license": "MIT",
-  "files": ["index.js", "move.js", "svg.js"]
+  "files": [
+    "index.js",
+    "move.js",
+    "svg.js"
+  ]
 }
