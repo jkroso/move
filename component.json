@@ -4,7 +4,7 @@
   "description": "pure JavaScript DOM animation",
   "keywords": ["animation"],
   "dependencies": {
-    "mikolalysenko/lazy-property": "0.0.2",
+    "matthewmueller/lazy-property": "0.0.2",
     "jkroso/normalize-svg-path": "0.1.0",
     "jkroso/serialize-svg-path": "0.1.0",
     "jkroso/balance-svg-paths": "0.1.0",
