@@ -25,7 +25,15 @@
     "jkroso/type": "1.1.0"
   },
   "scripts": [
-    "index.js"
+    "index.js",
+    "move.js",
+    "svg.js",
+    "tween/color.js",
+    "tween/index.js",
+    "tween/matrix.js",
+    "tween/number.js",
+    "tween/path.js",
+    "tween/px.js",
   ],
   "license": "MIT"
 }
