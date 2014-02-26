@@ -1,6 +1,6 @@
 {
   "name": "move",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repo": "jkroso/move",
   "description": "pure JavaScript DOM animation",
   "keywords": [
