@@ -11,7 +11,7 @@
     "component/color-parser": "0.1.0",
     "jkroso/parse-svg-path": "0.1.1",
     "jkroso/abs-svg-path": "0.1.1",
-    "jkroso/rel-svg-path": "0.1.0",
+    "jkroso/rel-svg-path": "0.1.1",
     "jkroso/string-tween": "0.1.0",
     "jkroso/animation": "0.1.1",
     "jkroso/unmatrix": "0.1.0",

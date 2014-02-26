@@ -16,7 +16,7 @@
     "string-tween": "~0.1.0",
     "color-parser": "~0.1.0",
     "abs-svg-path": "~0.1.1",
-    "rel-svg-path": "~0.1.0",
+    "rel-svg-path": "~0.1.1",
     "prefix": "~0.2.1",
     "fcomp": "~1.1.0"
   },
