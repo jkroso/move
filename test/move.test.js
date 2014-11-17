@@ -1,20 +1,19 @@
 
 var prefix = require('prefix')
-var chai = require('./chai')
 var move = require('..')
 
 var transform = prefix('transform')
 
 var box
 var mv
-beforeEach(function(){
+before(function(){
   spy = chai.spy()
   box = document.createElement('div')
   document.body.appendChild(box)
   mv = move(box).duration(10)
 })
 
-afterEach(function(){
+after(function(){
   document.body.removeChild(box)
 })
 

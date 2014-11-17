@@ -21,21 +21,22 @@
     "fcomp": "~1.1.0"
   },
   "devDependencies": {
-    "serve": "jkroso/serve#1.5.3",
+    "serve": "jkroso/serve",
+    "hydro-html": "*",
+    "hydro-chai": "*",
     "chai-spies": "*",
-    "mocha": "*",
+    "hydro-bdd": "*",
+    "hydro": "*",
     "chai": "*"
   },
   "repository": "git://github.com/jkroso/move.git",
-  "bugs": "https://github.com/jkroso/move/issues",
-  "keywords": [
-    "animation"
-  ],
+  "keywords": ["animation"],
   "author": "Jake Rosoman",
   "license": "MIT",
   "files": [
     "index.js",
     "move.js",
-    "svg.js"
+    "svg.js",
+    "tween"
   ]
 }
