@@ -11,7 +11,7 @@ module.exports = function(from, to){
       curr[i] = round(from[i] + (to[i] - from[i]) * n)
     }
     // don't round alpha
-    curr[3] = from[i] + (to[i] - from[i]) * n
+    curr[3] = from[3] + (to[3] - from[3]) * n
     return 'rgba(' + curr + ')'
   }
 }
