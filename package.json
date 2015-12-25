@@ -1,5 +1,5 @@
 {
-  "name": "move",
+  "name": "@jkroso/move",
   "version": "1.0.0",
   "description": "pure JavaScript DOM animation",
   "dependencies": {
