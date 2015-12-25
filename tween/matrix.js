@@ -1,20 +1,8 @@
+import unmatrix from '@jkroso/unmatrix'
+import tween from 'string-tween'
 
-var tween = require('string-tween')
-var unmatrix = require('unmatrix')
-var keys = Object.keys
-
-module.exports = function(from, to){
-  return tween(normalize(from), normalize(to))
-}
-
-function normalize(m){
-  if (typeof m == 'string') m = unmatrix(m)
-  return keys(unit).reduce(function(str, key){
-    return str + key + '(' + m[key] + unit[key] + ')'
-  }, '')
-}
-
-var unit = {
+const keys = Object.keys
+const unit = {
   translateX: 'px',
   translateY: 'px',
   rotate: 'deg',
@@ -22,3 +10,14 @@ var unit = {
   scaleX: '',
   scaleY: ''
 }
+
+const matrixTween = (from, to) => tween(normalize(from), normalize(to))
+
+const normalize = m => {
+  if (typeof m == 'string') m = unmatrix(m)
+  return keys(unit).reduce((str, key) => {
+    return str + key + '(' + m[key] + unit[key] + ')'
+  }, '')
+}
+
+export default matrixTween

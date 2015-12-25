@@ -1,4 +1,3 @@
-
 <title>transform example</title>
 
 <style>
@@ -17,9 +16,9 @@
 <div id="square"></div>
 
 <script>
-  var move = require('..')
+  import move from '..'
 
-  move('#square')
+  move(square)
     .ease('out-sine')
     .duration('.7s')
     .set('background-color', 'aliceblue')

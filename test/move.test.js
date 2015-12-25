@@ -1,6 +1,5 @@
-
-var prefix = require('prefix')
-var move = require('..')
+import prefix from 'prefix'
+import move from '..'
 
 var box, mv, spy
 before(function(){
@@ -20,10 +19,8 @@ describe('.set()', function(){
       opacity: 0,
       margin: 5
     }).render(.5)
-    box.style.should.include({
-      margin: '2.5px',
-      opacity: '0.5'
-    })
+    box.style.margin.should.eql('2.5px')
+    box.style.opacity.should.eql('0.5')
   })
 })
 

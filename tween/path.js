@@ -1,14 +1,17 @@
+import toString from 'serialize-svg-path'
+import balance from 'balance-svg-paths'
+import norm from 'normalize-svg-path'
+import parse from 'parse-svg-path'
+import tween from 'string-tween'
+import abs from 'abs-svg-path'
+import rel from 'rel-svg-path'
+import fcomp from 'fcomp'
 
-var toString = require('serialize-svg-path')
-var balance = require('balance-svg-paths')
-var tween = require('string-tween')
-var normalize = require('fcomp')(
-  require('parse-svg-path'),
-  require('abs-svg-path'),
-  require('normalize-svg-path'),
-  require('rel-svg-path'))
+const normalize = fcomp(parse, abs, norm, rel)
 
-module.exports = function(from, to){
-  var ends = balance(normalize(from), normalize(to))
-  return tween(toString(ends[0]), toString(ends[1]))
+const pathTween = (from, to) => {
+  const [start,end] = balance(normalize(from), normalize(to))
+  return tween(toString(start), toString(end))
 }
+
+export default pathTween

@@ -1,12 +1,12 @@
+import parse from 'color-parser'
 
-var parse = require('color-parser')
-var round = Math.round
+const round = Math.round
 
-module.exports = function(from, to){
+const tween = (from, to) => {
   from = rgba(from)
   to = rgba(to)
-  var curr = to.slice()
-  return function frame(n){
+  const curr = to.slice()
+  return n => {
     for (var i = 0; i < 3; i++) {
       curr[i] = round(from[i] + (to[i] - from[i]) * n)
     }
@@ -16,13 +16,11 @@ module.exports = function(from, to){
   }
 }
 
-function rgba(color){
+const rgba = color => {
   color = parse(color)
-  if (!color) return [255,255,255,0] // transparent
-  return [
-    color.r,
-    color.g,
-    color.b,
-    (color.a == null ? 1 : color.a)
-  ]
+  return color == null
+    ? [255,255,255,0] // transparent
+    : [color.r, color.g, color.b, (color.a == null ? 1 : color.a)]
 }
+
+export default tween

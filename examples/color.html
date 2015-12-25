@@ -1,4 +1,3 @@
-
 <title>color</title>
 
 <style>
@@ -17,15 +16,15 @@
 <div id="box2"></div>
 
 <script>
-  var move = require('..')
+  import move from '..'
 
-  move('#box1')
+  move(box1)
     .set('background-color', 'red')
     .ease('out-sine')
     .duration('.5s')
     .then().set('background-color', 'blue')
 
-  move('#box2')
+  move(box2)
     .set('background-color', 'rgba(0,0,0,0.3)')
     .ease('out-sine')
     .duration('.5s')

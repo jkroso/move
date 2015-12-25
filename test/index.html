@@ -1,12 +1,12 @@
-
 <title>move tests</title>
 <link rel="stylesheet" href="../node_modules/hydro-html/index.css">
 
 <div id="hydro"></div>
 
 <script>
-  var Hydro = require('hydro')
-  var hydro = new Hydro
+  import Hydro from 'hydro'
+
+  const hydro = new Hydro
 
   hydro.set({
     timeout: 500,
@@ -24,6 +24,7 @@
       ]
     }
   })
+
   hydro.setup()
 
   require('./move.test')
