@@ -50,7 +50,7 @@ export default class Move extends Animation {
 
   add(prop, n) {
     prop = prefix(prop)
-    var curr = parseInt(this.current(prop), 10)
+    const curr = parseInt(this.current(prop), 10)
     return this.set(prop, curr + n)
   }
 
@@ -64,7 +64,7 @@ export default class Move extends Animation {
 
   sub(prop, n) {
     prop = prefix(prop)
-    var curr = parseInt(this.current(prop), 10)
+    const curr = parseInt(this.current(prop), 10)
     return this.set(prop, curr - n)
   }
 
@@ -88,7 +88,7 @@ export default class Move extends Animation {
   */
 
   skew(deg) {
-    this.matrix.skew += deg
+    getMatrix(this).skew += deg
     return this
   }
 
@@ -103,8 +103,8 @@ export default class Move extends Animation {
   */
 
   translate(x, y) {
-    this.matrix.translateX += x
-    this.matrix.translateY += y
+    getMatrix(this).translateX += x
+    getMatrix(this).translateY += y
     return this
   }
 
@@ -144,8 +144,8 @@ export default class Move extends Animation {
 
   scale(x, y) {
     if (y == null) y = x
-    this.matrix.scaleX *= x
-    this.matrix.scaleY *= y
+    getMatrix(this).scaleX *= x
+    getMatrix(this).scaleY *= y
     return this
   }
 
@@ -182,7 +182,7 @@ export default class Move extends Animation {
   */
 
   rotate(n) {
-    this.matrix.rotate += n
+    getMatrix(this).rotate += n
     return this
   }
   /**
@@ -195,8 +195,8 @@ export default class Move extends Animation {
 
   render(n) {
     n = this._ease(n)
-    var tweens = this.tweens
-    var style = this.el.style
+    const tweens = this.tweens
+    const style = this.el.style
     for (var k in tweens) style[k] = tweens[k](n)
     return this
   }
@@ -214,9 +214,7 @@ export default class Move extends Animation {
 
   then(move) {
     if (move) {
-      var fn  = typeof move != 'function'
-        ? function(){ move.run() }
-        : move
+      const fn = typeof move != 'function' ? () => move.run() : move
       this.on('end', fn)
       this.running || this.parent || this.run()
       return this
@@ -225,22 +223,25 @@ export default class Move extends Animation {
     this.then(move)
     return move
   }
-
 }
 
-/**
-* css transformation matrix for `this.el`
-*
-* @return {Object}
-* @api private
-*/
+const getMatrix = self => self._to[transform] || (self._to[transform] = unitMatrix())
 
-lazy(Move.prototype, 'matrix', function() {
-  var matrix = this.current(transform)
-  if (typeof matrix == 'string') matrix = unmatrix(matrix)
-  this._to[transform] = matrix
-  return matrix
-})
+const combineMatrix = (a, b) =>
+  ({translateX: a.translateX + b.translateX,
+    translateY: a.translateY + b.translateY,
+    rotate: a.rotate + b.rotate,
+    skew: a.skew + b.skew,
+    scaleX: a.scaleX * b.scaleX,
+    scaleY: a.scaleY * b.scaleY})
+
+const unitMatrix = () =>
+  ({translateX: 0,
+    translateY: 0,
+    rotate: 0,
+    skew: 0,
+    scaleX: 1,
+    scaleY: 1})
 
 /**
 * generated tweening functions
@@ -251,6 +252,11 @@ lazy(Move.prototype, 'matrix', function() {
 
 lazy(Move.prototype, 'tweens', function() {
   const tweens = {}
+  if (this._to[transform]) {
+    var matrix = this.current(transform)
+    if (typeof matrix == 'string') matrix = unmatrix(matrix)
+    this._to[transform] = combineMatrix(this._to[transform], matrix)
+  }
   for (var key in this._to) {
     tweens[key] = tween(key, this.current(key), this._to[key])
   }
@@ -258,10 +264,9 @@ lazy(Move.prototype, 'tweens', function() {
 })
 
 /**
- * default duration
+ * Alias properties
  */
 
-Move.prototype.duration('300ms')
 Move.prototype.x = Move.prototype.translateX
 Move.prototype.y = Move.prototype.translateY
 
